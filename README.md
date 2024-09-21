@@ -1,16 +1,8 @@
+![PricePal Logo](assets/readme/logo.png)
 # PRICE.PAL
+Save Money on Your Next Shopping Trip Using AI
 
-Make Shopping Better
+![PricePal Screenshot](assets/readme/pricepal_app.png)
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## How Does It Work?
+PRICE.PAL Scans a shelf full of items and finds you the best deal
