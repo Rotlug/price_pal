@@ -12,10 +12,12 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   double infoHeight = 100.0;
 
-  void setHeight(Offset offset) {
+  void setHeight(double distance) {
     setState(() {
-      infoHeight -= offset.dy;
-      if (infoHeight < 99 || infoHeight > 400) {infoHeight += offset.dy;}
+      infoHeight -= distance;
+      if (infoHeight < 99 || infoHeight > 400) {
+        infoHeight += distance;
+      }
     });
   }
 
@@ -29,6 +31,7 @@ class _MainPageState extends State<MainPage> {
             const Expanded(child: DecoratedContainer()),
             ResizeBar(
               resizeFunc: setHeight,
+              vertical: true,
             ),
             SizedBox(
               height: infoHeight,
@@ -43,19 +46,21 @@ class _MainPageState extends State<MainPage> {
 
 class ResizeBar extends StatelessWidget {
   final Function resizeFunc;
-  const ResizeBar({super.key, required this.resizeFunc});
+  final bool vertical;
+  const ResizeBar(
+      {super.key, required this.resizeFunc, required this.vertical});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
         color: Colors.black,
-        width: double.infinity,
-        height: 17,
+        width: vertical ? double.infinity : 17,
+        height: vertical ? 17 : double.infinity,
         child: Center(
           child: Container(
-            width: 100,
-            height: 4,
+            width: vertical ? 100 : 4,
+            height: vertical ? 4 : 100,
             decoration: const BoxDecoration(
                 color: Colors.grey,
                 borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -63,7 +68,10 @@ class ResizeBar extends StatelessWidget {
         ),
       ),
       onVerticalDragUpdate: (details) {
-        resizeFunc(details.delta);
+        if (vertical) {resizeFunc(details.delta.dy);}
+      },
+      onHorizontalDragUpdate: (details) {
+        if (!vertical) {resizeFunc(details.delta.dx);}
       },
     );
   }
