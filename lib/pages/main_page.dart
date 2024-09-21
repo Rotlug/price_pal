@@ -28,7 +28,9 @@ class _MainPageState extends State<MainPage> {
         margin: const EdgeInsets.all(10),
         child: Column(
           children: [
-            const Expanded(child: DecoratedContainer()),
+            const Expanded(child: DecoratedContainer(
+              child: Center(child: Text("The Camera is Here :)", style: TextStyle(fontSize: 24), textAlign: TextAlign.center,)),
+            )),
             ResizeBar(
               resizeFunc: setHeight,
               vertical: true,
@@ -62,7 +64,7 @@ class ResizeBar extends StatelessWidget {
             width: vertical ? 100 : 4,
             height: vertical ? 4 : 100,
             decoration: const BoxDecoration(
-                color: Colors.grey,
+                color: Color(0xff272727),
                 borderRadius: BorderRadius.all(Radius.circular(10))),
           ),
         ),

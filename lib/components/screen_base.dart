@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ScreenBase extends StatelessWidget {
-  final Widget? child;
-  const ScreenBase({super.key, this.child});
+  final Widget child;
+  const ScreenBase({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: child,
-      ),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SafeArea(child: child),
     );
   }
 
