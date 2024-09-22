@@ -7,6 +7,6 @@ Save Money on Your Next Shopping Trip Using AI
 ## How Does It Work?
 PRICE.PAL Scans a shelf full of items and finds you the best deal
 
-### Made by
+### Made By
 [rotlug](https://github.com/Rotlug)
 [Jonathan Rashi](https://jonathanrashi.com)
