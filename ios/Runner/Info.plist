@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+    <string>PRICE.PAL Needs access to your camera so you it can see the shelf</string>
 </dict>
 </plist>
