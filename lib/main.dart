@@ -15,9 +15,9 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.dark,
         fontFamily: "FakeReceipt",
         useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green.shade700, brightness: Brightness.dark, dynamicSchemeVariant: DynamicSchemeVariant.fidelity)
       ),
       home: const LandingPage(),
     );
