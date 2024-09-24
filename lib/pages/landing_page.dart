@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:price_pal/components/button.dart';
 import 'package:price_pal/components/container.dart';
 import 'package:price_pal/components/screen_base.dart';
@@ -17,6 +18,7 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   void initState() {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.initState();
     _pageViewController = PageController(initialPage: 0);
   }
