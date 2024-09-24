@@ -24,8 +24,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return ScreenBase(
-      child: Container(
-        margin: const EdgeInsets.all(10),
+      child: MarginContainer(
         child: Column(
           children: [
             const Expanded(child: DecoratedContainer(

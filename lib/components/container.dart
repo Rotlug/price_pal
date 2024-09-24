@@ -20,14 +20,16 @@ class DecoratedContainer extends StatelessWidget {
             ),
             child: child,
           ),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: borderRadius,
-                border: Border.all(
-                  color: const Color.fromRGBO(255, 255, 255, 0.05),
-                  width: 3,
-                  strokeAlign: BorderSide.strokeAlignInside,
-                )),
+          IgnorePointer(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: borderRadius,
+                  border: Border.all(
+                    color: const Color.fromRGBO(255, 255, 255, 0.05),
+                    width: 2,
+                    strokeAlign: BorderSide.strokeAlignInside,
+                  )),
+            ),
           )
         ],
       ),
