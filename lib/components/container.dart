@@ -14,8 +14,8 @@ class DecoratedContainer extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: Color.fromRGBO(27, 27, 27, 1),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceDim,
               borderRadius: borderRadius,
             ),
             child: child,
@@ -25,7 +25,7 @@ class DecoratedContainer extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: borderRadius,
                   border: Border.all(
-                    color: const Color.fromRGBO(255, 255, 255, 0.05),
+                    color: const Color.fromRGBO(255, 255, 255, 0.02),
                     width: 2,
                     strokeAlign: BorderSide.strokeAlignInside,
                   )),

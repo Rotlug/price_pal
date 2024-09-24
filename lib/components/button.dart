@@ -14,6 +14,7 @@ class DecoratedButtonTest extends StatelessWidget {
     return ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(
+          elevation: const WidgetStatePropertyAll(0),
           minimumSize: const WidgetStatePropertyAll(Size(double.infinity, 0)),
           backgroundColor: WidgetStateProperty.resolveWith<Color?>(
             (Set<WidgetState> states) {
@@ -21,9 +22,15 @@ class DecoratedButtonTest extends StatelessWidget {
                 return Theme.of(context).colorScheme.onSecondaryFixed;
               }
               else if (!suggestedAction) {
-                return const Color(0xff1B1B1B);
+                return Colors.transparent;
               }
-              return Theme.of(context).colorScheme.primaryContainer; // Use the component's default.
+              return Theme.of(context).colorScheme.primaryContainer;
+            }),
+            foregroundColor: WidgetStateProperty.resolveWith((states) {
+                if (suggestedAction) {
+                  return Theme.of(context).colorScheme.onPrimary;
+                }
+                return null;
             }),
             shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
         ),

@@ -1,13 +1,17 @@
 import 'dart:developer';
 
+import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:price_pal/components/button.dart';
 import 'package:price_pal/components/container.dart';
 import 'package:price_pal/components/screen_base.dart';
+import 'package:price_pal/pages/camera_screen.dart';
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({super.key});
+  final CameraDescription camera;
+  const LandingPage({super.key, required this.camera});
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -18,7 +22,6 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   void initState() {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.initState();
     _pageViewController = PageController(initialPage: 0);
   }
@@ -32,13 +35,14 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return ScreenBase(
+      allowedOrientations: const [DeviceOrientation.portraitUp],
       child: MarginContainer(
         child: DecoratedContainer(
             child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(12),
-              child: LandingProgressBar(pageController: _pageViewController, numPages: 3,),
+              child: LandingProgressBar(pageController: _pageViewController, numPages: 3, separatorColor: Theme.of(context).colorScheme.surfaceDim,),
             ),
             Expanded(
               child: PageView(
@@ -69,7 +73,9 @@ class _LandingPageState extends State<LandingPage> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  DecoratedButtonTest(text: "Sign Up", suggestedAction: true, onPressed: () {},),
+                  DecoratedButtonTest(text: "Sign Up", suggestedAction: true, onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CameraScreen(camera: widget.camera),));
+                  },),
                   DecoratedButtonTest(text: "Sign In", suggestedAction: false, onPressed: () {},),
                 ],
               ),
@@ -118,9 +124,12 @@ class ExplanationPage extends StatelessWidget {
           Expanded(
               child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              imageAsset,
-              fit: BoxFit.contain,
+            child: Opacity(
+              opacity: 0.2,
+              child: Image.asset(
+                imageAsset,
+                fit: BoxFit.contain,
+              ),
             ),
           ))
         ],
@@ -132,7 +141,9 @@ class ExplanationPage extends StatelessWidget {
 class LandingProgressBar extends StatefulWidget {
   final PageController pageController;
   final int numPages;
-  const LandingProgressBar({super.key, required, required this.pageController, required this.numPages});
+  final Color separatorColor;
+
+  const LandingProgressBar({super.key, required, required this.pageController, required this.numPages, required this.separatorColor});
 
   @override
   State<LandingProgressBar> createState() => _LandingProgressBarState();
@@ -142,10 +153,12 @@ class _LandingProgressBarState extends State<LandingProgressBar> {
   late final int numPages;
   late double pageNum = 1 / numPages;
   late final List<Container> containers;
+  late final Color separatorColor;
 
   @override
   void initState() {
     super.initState();
+    separatorColor = widget.separatorColor;
     numPages = widget.numPages;
     containers = createContainers();
   }
@@ -184,7 +197,7 @@ class _LandingProgressBarState extends State<LandingProgressBar> {
       result.add(Container(
         width: 2,
         height: 5,
-        color: isVisible ? const Color.fromRGBO(27, 27, 27, 1) : Colors.transparent,
+        color: isVisible ? separatorColor : Colors.transparent,
       ));
     }
 

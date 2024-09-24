@@ -2,7 +2,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:price_pal/pages/landing_page.dart';
-import 'package:price_pal/pages/main_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,9 +23,9 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "FakeReceipt",
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff5E48FE), brightness: Brightness.dark, dynamicSchemeVariant: DynamicSchemeVariant.fidelity)
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green.shade300, brightness: Brightness.dark, dynamicSchemeVariant: DynamicSchemeVariant.fidelity)
       ),
-      home: MainPage(camera: camera,),
+      home: LandingPage(camera: camera,),
     );
   }
 }
