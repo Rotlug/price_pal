@@ -10,7 +10,7 @@ class ResizeBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
-        color: Colors.black,
+        color: Theme.of(context).scaffoldBackgroundColor,
         width: vertical ? double.infinity : 17,
         height: vertical ? 17 : double.infinity,
         child: Center(
@@ -18,7 +18,7 @@ class ResizeBar extends StatelessWidget {
             width: vertical ? 100 : 4,
             height: vertical ? 4 : 100,
             decoration: const BoxDecoration(
-                color: Color(0xff272727),
+                color: Color(0xff282828),
                 borderRadius: BorderRadius.all(Radius.circular(10))),
           ),
         ),

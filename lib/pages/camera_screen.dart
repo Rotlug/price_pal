@@ -36,9 +36,11 @@ class _CameraScreenState extends State<CameraScreen> {
           CameraView(camera: widget.camera),
           Column(children: [
             Expanded(child: Container()),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: CameraButton(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CameraButton(
+                onPressed: () {},
+              ),
             )
           ],)
         ],

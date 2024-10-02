@@ -31,7 +31,6 @@ class _ScreenBaseState extends State<ScreenBase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       body: SafeArea(child: widget.child),
     );
   }
