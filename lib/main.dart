@@ -23,7 +23,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "FakeReceipt",
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green.shade300, brightness: Brightness.dark, dynamicSchemeVariant: DynamicSchemeVariant.fidelity)
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff5E48FE), brightness: Brightness.dark, dynamicSchemeVariant: DynamicSchemeVariant.fidelity)
       ),
       home: LandingPage(camera: camera,),
     );

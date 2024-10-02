@@ -1,10 +1,12 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:price_pal/components/container.dart';
-import 'package:price_pal/components/screen_base.dart';
+import 'package:price_pal/components/split_page.dart';
+
+import '../components/camera_view.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
+
   const CameraScreen({super.key, required this.camera});
 
   @override
@@ -12,82 +14,61 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
+  static const minHeight = 200;
+  static const maxHeight = 300;
+  double height = 250;
+
+  void setHeight(double delta) {
+    setState(() {
+      height -= delta;
+      if (height > maxHeight || height < minHeight) {
+        // Revert the change if height exceeds boundaries
+        height += delta;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ScreenBase(
-      child: OrientationBuilder(
-        builder: (context, orientation) {
-          return Stack(
-            children: [
-              Flex(
-                direction: orientation == Orientation.landscape
-                    ? Axis.horizontal
-                    : Axis.vertical,
-                children: [
-                  const Expanded(child: SizedBox()),
-                  MarginContainer(
-                    child: DecoratedContainer(
-                        // borderRadius: BorderRadius.circular(16),
-                        child: Center(child: CameraView(camera: widget.camera))),
-                  ),
-                  const Expanded(child: SizedBox()),
-                ],
-              )
-            ],
-          );
-        },
+    return SplitPage(
+      child1: Stack(
+        children: [
+          CameraView(camera: widget.camera),
+          Column(children: [
+            Expanded(child: Container()),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: CameraButton(),
+            )
+          ],)
+        ],
+      ),
+      child2: const Center(child: Text("SplitPage Test"),),
+    );
+  }
+}
+
+class CameraButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+
+  const CameraButton({super.key, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.white.withAlpha(255 ~/ 2), width: 5),
+          shape: BoxShape.circle),
+      child: FloatingActionButton(
+        onPressed: onPressed,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        shape: const CircleBorder(),
       ),
     );
   }
 }
 
-class CameraView extends StatefulWidget {
-  final CameraDescription camera;
-  const CameraView({super.key, required this.camera});
-
-  @override
-  State<CameraView> createState() => _CameraViewState();
-}
-
-class _CameraViewState extends State<CameraView> {
-  late CameraController _controller;
-  late Future<void> _initializeControllerFuture;
-
-  @override
-  void initState() {
-    _controller = CameraController(
-      // Get a specific camera from the list of available cameras.
-      widget.camera,
-      // Define the resolution to use.
-      ResolutionPreset.medium,
-    );
-
-    // Next, initialize the controller. This returns a Future.
-    _initializeControllerFuture = _controller.initialize();
-
-    // to prevent scaling down, invert the value
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // calculate scale depending on screen and camera ratios
-    // this is actually size.aspectRatio / (1 / camera.aspectRatio)
-    // because camera preview size is received as landscape
-    // but we're calculating for portrait orientation
-
-    return FutureBuilder<void>(
-      future: _initializeControllerFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          // If the Future is complete, display the preview.
-          return CameraPreview(_controller);
-        } else {
-          // Otherwise, display a loading indicator.
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
-    );
-  }
+Axis oriToAxis(Orientation orientation) {
+  return orientation == Orientation.landscape ? Axis.horizontal : Axis.vertical;
 }

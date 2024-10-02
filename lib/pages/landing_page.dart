@@ -42,7 +42,7 @@ class _LandingPageState extends State<LandingPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(12),
-              child: LandingProgressBar(pageController: _pageViewController, numPages: 3, separatorColor: Theme.of(context).colorScheme.surfaceDim,),
+              child: LandingProgressBar(pageController: _pageViewController, numPages: 3, separatorColor: const Color(0xff1B1B1B),),
             ),
             Expanded(
               child: PageView(
@@ -74,7 +74,7 @@ class _LandingPageState extends State<LandingPage> {
               child: Column(
                 children: [
                   DecoratedButtonTest(text: "Sign Up", suggestedAction: true, onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CameraScreen(camera: widget.camera),));
+                    Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => CameraScreen(camera: widget.camera),));
                   },),
                   DecoratedButtonTest(text: "Sign In", suggestedAction: false, onPressed: () {},),
                 ],

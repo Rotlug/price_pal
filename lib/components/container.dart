@@ -14,8 +14,8 @@ class DecoratedContainer extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceDim,
+            decoration: const BoxDecoration(
+              color: Color(0xff1B1B1B),
               borderRadius: borderRadius,
             ),
             child: child,
