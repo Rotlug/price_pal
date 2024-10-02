@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,8 +9,7 @@ import 'package:price_pal/components/screen_base.dart';
 import 'package:price_pal/pages/camera_screen.dart';
 
 class LandingPage extends StatefulWidget {
-  final CameraDescription camera;
-  const LandingPage({super.key, required this.camera});
+  const LandingPage({super.key});
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -73,10 +71,13 @@ class _LandingPageState extends State<LandingPage> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  DecoratedButtonTest(text: "Sign Up", suggestedAction: true, onPressed: () {
-                    Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => CameraScreen(camera: widget.camera),));
-                  },),
-                  DecoratedButtonTest(text: "Sign In", suggestedAction: false, onPressed: () {},),
+                  // DecoratedButtonTest(text: "Sign Up", suggestedAction: true, onPressed: () {
+                  //   Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => CameraScreen(camera: widget.camera),));
+                  // },),
+                  // DecoratedButtonTest(text: "Sign In", suggestedAction: false, onPressed: () {},),
+                  DecoratedButton(text: "Get Started", suggestedAction: true, onPressed: () {
+                    Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => const CameraScreen(),));
+                  },)
                 ],
               ),
             ),

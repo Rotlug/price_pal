@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 enum DecoratedButtonStyle { normal, suggested }
 
-class DecoratedButtonTest extends StatelessWidget {
+class DecoratedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool suggestedAction;
   final String text;
 
-  const DecoratedButtonTest(
+  const DecoratedButton(
       {super.key,
       required this.text,
       this.onPressed,

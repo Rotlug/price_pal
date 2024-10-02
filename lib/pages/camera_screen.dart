@@ -1,13 +1,12 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:price_pal/components/split_page.dart';
+import 'package:price_pal/main.dart';
 
 import '../components/camera_view.dart';
+import 'package:provider/provider.dart';
 
 class CameraScreen extends StatefulWidget {
-  final CameraDescription camera;
-
-  const CameraScreen({super.key, required this.camera});
+  const CameraScreen({super.key});
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -33,7 +32,9 @@ class _CameraScreenState extends State<CameraScreen> {
     return SplitPage(
       child1: Stack(
         children: [
-          CameraView(camera: widget.camera),
+          Consumer<CameraModel>(builder: (BuildContext context, CameraModel value, Widget? child) {
+            return CameraView(camera: value.camera);
+          }),
           Column(children: [
             Expanded(child: Container()),
             Padding(
@@ -42,7 +43,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 onPressed: () {},
               ),
             )
-          ],)
+          ],),
         ],
       ),
       child2: const Center(child: Text("SplitPage Test"),),
@@ -59,7 +60,7 @@ class CameraButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.white.withAlpha(255 ~/ 2), width: 5),
+          border: Border.all(color: Colors.white.withOpacity(0.5), width: 5),
           shape: BoxShape.circle),
       child: FloatingActionButton(
         onPressed: onPressed,
@@ -69,8 +70,4 @@ class CameraButton extends StatelessWidget {
       ),
     );
   }
-}
-
-Axis oriToAxis(Orientation orientation) {
-  return orientation == Orientation.landscape ? Axis.horizontal : Axis.vertical;
 }
