@@ -21,6 +21,7 @@ class _CameraViewState extends State<CameraView> {
       widget.camera,
       // Define the resolution to use.
       ResolutionPreset.medium,
+      enableAudio: false
     );
 
     // Next, initialize the controller. This returns a Future.

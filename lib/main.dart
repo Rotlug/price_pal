@@ -50,9 +50,3 @@ class CameraModel extends ChangeNotifier {
   late final CameraDescription camera;
   CameraModel({required this.camera});
 }
-
-//
-// Future<CameraDescription> getCamera() async {
-//   final camera = await availableCameras().then((value) => value.first,);
-//   return camera.;
-// }
