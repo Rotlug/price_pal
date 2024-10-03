@@ -5,14 +5,14 @@ import 'package:price_pal/main.dart';
 import '../components/camera_view.dart';
 import 'package:provider/provider.dart';
 
-class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
+class CameraPage extends StatefulWidget {
+  const CameraPage({super.key});
 
   @override
-  State<CameraScreen> createState() => _CameraScreenState();
+  State<CameraPage> createState() => _CameraPageState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _CameraPageState extends State<CameraPage> {
   static const minHeight = 200;
   static const maxHeight = 300;
   double height = 250;

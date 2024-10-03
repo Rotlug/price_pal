@@ -2,11 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:price_pal/components/button.dart';
-import 'package:price_pal/components/container.dart';
 import 'package:price_pal/components/screen_base.dart';
-import 'package:price_pal/pages/camera_screen.dart';
+import 'package:price_pal/pages/camera_page.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -32,58 +30,68 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenBase(
-      allowedOrientations: const [DeviceOrientation.portraitUp],
-      child: MarginContainer(
-        child: DecoratedContainer(
+    return ContainerPage(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: LandingProgressBar(
+              pageController: _pageViewController,
+              numPages: 3,
+              separatorColor: const Color(0xff1B1B1B),
+            ),
+          ),
+          Expanded(
+            child: PageView(
+              controller: _pageViewController,
+              children: const [
+                ExplanationPage(
+                  title: "Scan & Compare",
+                  description:
+                      "Scan product with your phone to view real-time price comparisons across products.",
+                  imageAsset: "assets/images/landing1.png",
+                ),
+                ExplanationPage(
+                  title: "Track Savings",
+                  description:
+                      "Track your savings and ensure you get the best value as you shop.",
+                  imageAsset: "assets/images/landing2.png",
+                ),
+                ExplanationPage(
+                  title: "Save Big",
+                  description:
+                      "Select the cheapest options and save on every purchase directly in the app.",
+                  imageAsset: "assets/images/landing3.png",
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: LandingProgressBar(pageController: _pageViewController, numPages: 3, separatorColor: const Color(0xff1B1B1B),),
+              children: [
+                // DecoratedButtonTest(text: "Sign Up", suggestedAction: true, onPressed: () {
+                //   Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => CameraScreen(camera: widget.camera),));
+                // },),
+                // DecoratedButtonTest(text: "Sign In", suggestedAction: false, onPressed: () {},),
+                DecoratedButton(
+                  text: "Get Started",
+                  suggestedAction: true,
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const CameraPage(),
+                        ));
+                  },
+                )
+              ],
             ),
-            Expanded(
-              child: PageView(
-                controller: _pageViewController,
-                children: const [
-                  ExplanationPage(
-                    title: "Scan & Compare",
-                    description:
-                        "Scan product with your phone to view real-time price comparisons across products.",
-                    imageAsset: "assets/images/landing1.png",
-                  ),
-                  ExplanationPage(
-                    title: "Track Savings",
-                    description:
-                        "Track your savings and ensure you get the best value as you shop.",
-                    imageAsset: "assets/images/landing2.png",
-                  ),
-                  ExplanationPage(
-                    title: "Save Big",
-                    description:
-                        "Select the cheapest options and save on every purchase directly in the app.",
-                    imageAsset: "assets/images/landing3.png",
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  // DecoratedButtonTest(text: "Sign Up", suggestedAction: true, onPressed: () {
-                  //   Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => CameraScreen(camera: widget.camera),));
-                  // },),
-                  // DecoratedButtonTest(text: "Sign In", suggestedAction: false, onPressed: () {},),
-                  DecoratedButton(text: "Get Started", suggestedAction: true, onPressed: () {
-                    Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => const CameraScreen(),));
-                  },)
-                ],
-              ),
-            ),
-            const SizedBox(height: 10,)
-          ],
-        )),
+          ),
+          const SizedBox(
+            height: 10,
+          )
+        ],
       ),
     );
   }
@@ -108,17 +116,15 @@ class ExplanationPage extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(fontSize: 30),
+            style: Theme.of(context).textTheme.displayLarge,
             textAlign: TextAlign.center,
           ),
           const SizedBox(
             height: 10,
           ),
-          Opacity(
-              opacity: 0.5,
-              child: Text(description,
-                  style: const TextStyle(fontFamily: "Inter"),
-                  textAlign: TextAlign.center)),
+          Text(description,
+              style: Theme.of(context).textTheme.titleSmall,
+              textAlign: TextAlign.center),
           const SizedBox(
             height: 10,
           ),
@@ -144,7 +150,12 @@ class LandingProgressBar extends StatefulWidget {
   final int numPages;
   final Color separatorColor;
 
-  const LandingProgressBar({super.key, required, required this.pageController, required this.numPages, required this.separatorColor});
+  const LandingProgressBar(
+      {super.key,
+      required,
+      required this.pageController,
+      required this.numPages,
+      required this.separatorColor});
 
   @override
   State<LandingProgressBar> createState() => _LandingProgressBarState();

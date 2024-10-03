@@ -21,18 +21,17 @@ class _CameraViewState extends State<CameraView> {
       widget.camera,
       // Define the resolution to use.
       ResolutionPreset.medium,
-      enableAudio: false
+      enableAudio: false,
     );
 
     // Next, initialize the controller. This returns a Future.
     _initializeControllerFuture = _controller.initialize().then(
       (value) {
-        _controller.getMinZoomLevel().then(
-              (value) => _controller.setZoomLevel(value),
-            );
+        _controller
+            .getMinZoomLevel()
+            .then((value) => _controller.setZoomLevel(value));
       },
     );
-    // to prevent scaling down, invert the value
 
     super.initState();
   }
