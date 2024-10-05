@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:price_pal/components/split_page.dart';
 import 'package:price_pal/main.dart';
@@ -13,40 +16,43 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  static const minHeight = 200;
-  static const maxHeight = 300;
-  double height = 250;
-
-  void setHeight(double delta) {
-    setState(() {
-      height -= delta;
-      if (height > maxHeight || height < minHeight) {
-        // Revert the change if height exceeds boundaries
-        height += delta;
-      }
-    });
-  }
+  XFile? image;
 
   @override
   Widget build(BuildContext context) {
     return SplitPage(
       child1: Stack(
         children: [
-          Consumer<CameraModel>(builder: (BuildContext context, CameraModel value, Widget? child) {
-            return CameraView(camera: value.camera);
-          }),
-          Column(children: [
-            Expanded(child: Container()),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CameraButton(
-                onPressed: () {},
-              ),
-            )
-          ],),
+          (image == null) ? const CameraView() : ImagePreview(image: image!),
+          Column(
+            children: [
+              Expanded(child: Container()),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CameraButton(
+                  onPressed: takePicture,
+                ),
+              )
+            ],
+          ),
         ],
       ),
-      child2: const Center(child: Text("SplitPage Test"),),
+      child2: const Center(
+        child: Text("SplitPage Test"),
+      ),
+    );
+  }
+
+  void takePicture() {
+    final camera = Provider.of<CameraModel>(context, listen: false);
+    camera.takePicture().then(
+      (value) {
+        if (value != null) {
+          setState(() {
+            image = value;
+          });
+        }
+      },
     );
   }
 }
@@ -60,13 +66,39 @@ class CameraButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.white.withOpacity(0.5), width: 5),
-          shape: BoxShape.circle),
+        border: Border.all(color: Colors.white.withOpacity(0.5), width: 5),
+        shape: BoxShape.circle,
+      ),
       child: FloatingActionButton(
         onPressed: onPressed,
         backgroundColor: Colors.white,
         elevation: 0,
         shape: const CircleBorder(),
+      ),
+    );
+  }
+}
+
+class ImagePreview extends StatelessWidget {
+  final XFile image;
+
+  const ImagePreview({super.key, required this.image});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+
+    return SizedBox(
+      width: size.width,
+      height: size.height,
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: SizedBox(
+          width: 100, // the actual width is not important here
+          child: Image.file(
+            File(image.path),
+          ),
+        ),
       ),
     );
   }
