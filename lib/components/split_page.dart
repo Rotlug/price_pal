@@ -45,16 +45,10 @@ class _SplitPageState extends State<SplitPage> {
               ResizeBar(
                   resizeFunc: setHeight,
                   vertical: orientation == Orientation.portrait),
-              DecoratedContainer(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: orientation == Orientation.portrait
-                        ? height
-                        : double.infinity,
-                    minWidth: orientation == Orientation.landscape
-                        ? height
-                        : double.infinity,
-                  ),
+              SizedBox(
+                height: orientation == Orientation.portrait ? height : double.infinity,
+                width:  orientation == Orientation.landscape ? height : double.infinity,
+                child: DecoratedContainer(
                   child: widget.child2,
                 ),
               )

@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:price_pal/components/split_page.dart';
 import 'package:price_pal/main.dart';
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
 import '../components/camera_view.dart';
 import 'package:provider/provider.dart';
@@ -38,9 +38,6 @@ class _CameraPageState extends State<CameraPage> {
           ),
           // const AIEffectContainer()
         ],
-      ),
-      child2: const Center(
-        child: Text("SplitPage Test"),
       ),
     );
   }
@@ -86,17 +83,15 @@ class AIEffectContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ImageFiltered(
-      imageFilter: ImageFilter.blur(sigmaY: 40, sigmaX: 40),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            width: 40,
-            strokeAlign: BorderSide.strokeAlignCenter,
-          ),
+    return Container(
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+          inset: true,
+          spreadRadius: 12,
+          blurRadius: 80,
+          color: Theme.of(context).colorScheme.primaryContainer,
         ),
-      ),
+      ]),
     );
   }
 }
