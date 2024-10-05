@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class _CameraPageState extends State<CameraPage> {
               )
             ],
           ),
+          // const AIEffectContainer()
         ],
       ),
       child2: const Center(
@@ -74,6 +76,26 @@ class CameraButton extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         shape: const CircleBorder(),
+      ),
+    );
+  }
+}
+
+class AIEffectContainer extends StatelessWidget {
+  const AIEffectContainer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ImageFiltered(
+      imageFilter: ImageFilter.blur(sigmaY: 40, sigmaX: 40),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            width: 40,
+            strokeAlign: BorderSide.strokeAlignCenter,
+          ),
+        ),
       ),
     );
   }
