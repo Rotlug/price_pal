@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:native_camera_sound/native_camera_sound.dart';
 import 'package:price_pal/components/split_page.dart';
-import 'package:price_pal/main.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:price_pal/providers/camera_provider.dart';
 
 import '../components/camera_view.dart';
 import 'package:provider/provider.dart';
@@ -36,14 +37,14 @@ class _CameraPageState extends State<CameraPage> {
               )
             ],
           ),
-          // const AIEffectContainer()
+          const AIEffectContainer()
         ],
       ),
     );
   }
 
   void takePicture() {
-    final camera = Provider.of<CameraModel>(context, listen: false);
+    final camera = Provider.of<CameraProvider>(context, listen: false);
     camera.takePicture().then(
       (value) {
         if (value != null) {
@@ -56,25 +57,58 @@ class _CameraPageState extends State<CameraPage> {
   }
 }
 
-class CameraButton extends StatelessWidget {
+class CameraButton extends StatefulWidget {
   final VoidCallback? onPressed;
-
+  static const int animationDuration = 250;
   const CameraButton({super.key, this.onPressed});
 
   @override
+  State<CameraButton> createState() => _CameraButtonState();
+}
+
+class _CameraButtonState extends State<CameraButton> {
+  double scale = 1;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white.withOpacity(0.5), width: 5),
-        shape: BoxShape.circle,
-      ),
-      child: FloatingActionButton(
-        onPressed: onPressed,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        shape: const CircleBorder(),
+    return AnimatedScale(
+      scale: scale,
+      curve: Curves.easeIn,
+      duration: const Duration(milliseconds: CameraButton.animationDuration ~/ 2),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.white.withOpacity(0.5), width: 5),
+          shape: BoxShape.circle,
+        ),
+        child: FloatingActionButton(
+          onPressed: takePicture,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          shape: const CircleBorder(),
+        ),
       ),
     );
+  }
+
+  void takePicture() {
+    NativeCameraSound.playShutter();
+
+    // Scale down
+    setState(() {
+      scale = 0.9;
+    });
+
+    // Scale Back up
+    Future.delayed(
+      const Duration(milliseconds: CameraButton.animationDuration ~/ 2),
+      () => setState(
+        () {
+          scale = 1;
+        },
+      ),
+    );
+
+    if (widget.onPressed != null) widget.onPressed!();
   }
 }
 
@@ -83,15 +117,17 @@ class AIEffectContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          inset: true,
-          spreadRadius: 12,
-          blurRadius: 80,
-          color: Theme.of(context).colorScheme.primaryContainer,
-        ),
-      ]),
+    return IgnorePointer(
+      child: Container(
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            inset: true,
+            spreadRadius: 12,
+            blurRadius: 80,
+            color: Theme.of(context).colorScheme.primaryContainer,
+          ),
+        ]),
+      ),
     );
   }
 }

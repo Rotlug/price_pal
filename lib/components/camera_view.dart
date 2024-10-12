@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:price_pal/main.dart';
+import 'package:price_pal/providers/camera_provider.dart';
 import 'package:provider/provider.dart';
 
 class CameraView extends StatefulWidget {
@@ -15,12 +15,12 @@ class CameraView extends StatefulWidget {
 }
 
 class _CameraViewState extends State<CameraView> {
-  late final CameraModel camera;
+  late final Provider<CameraProvider>camera;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    final cameraProvider = Provider.of<CameraModel>(context);
+    final cameraProvider = Provider.of<CameraProvider>(context);
 
     return cameraProvider.controller != null
         ? SizedBox(
