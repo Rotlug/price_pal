@@ -1,7 +1,8 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:price_pal/pages/landing_page.dart';
+import 'package:price_pal/providers/camera_provider.dart';
+import 'package:price_pal/providers/storage_provider.dart';
 import 'package:provider/provider.dart';
 
 const backgroundColor = Color(0xff111111);
@@ -34,10 +35,19 @@ void main() async {
     mySystemTheme,
   );
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => CameraModel(),
-    child: const MainApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => CameraProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => StorageProvider(),
+        )
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -58,46 +68,5 @@ class MainApp extends StatelessWidget {
               dynamicSchemeVariant: DynamicSchemeVariant.fidelity)),
       home: const LandingPage(),
     );
-  }
-}
-
-class CameraModel extends ChangeNotifier {
-  CameraController? _controller;
-  List<CameraDescription>? _cameras;
-
-  CameraModel() {
-    initializeCameras();
-  }
-
-  Future<void> initializeCameras() async {
-    _cameras = await availableCameras();
-    if (_cameras!.isNotEmpty) {
-      _controller = CameraController(
-        _cameras!.first,
-        ResolutionPreset.medium,
-        enableAudio: false,
-      );
-      await _controller!.initialize();
-      notifyListeners();
-    }
-  }
-
-  CameraController? get controller => _controller;
-
-  Future<XFile?> takePicture() async {
-    if (_controller != null && _controller!.value.isInitialized) {
-      try {
-        return await _controller!.takePicture();
-      } catch (e) {
-        //
-      }
-    }
-    return null;
-  }
-
-  @override
-  void dispose() {
-    _controller?.dispose();
-    super.dispose();
   }
 }

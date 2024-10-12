@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:price_pal/components/button.dart';
 import 'package:price_pal/components/screen_base.dart';
-import 'package:price_pal/pages/camera_page.dart';
+import 'package:price_pal/pages/setup_page.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -81,7 +81,7 @@ class _LandingPageState extends State<LandingPage> {
                     Navigator.pushReplacement(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) => const CameraPage(),
+                          builder: (context) => const SetupPage(),
                         ));
                   },
                 )
