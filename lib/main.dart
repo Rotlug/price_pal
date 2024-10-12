@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:price_pal/pages/camera_page.dart';
 import 'package:price_pal/pages/landing_page.dart';
 import 'package:price_pal/providers/camera_provider.dart';
 import 'package:price_pal/providers/storage_provider.dart';
@@ -55,18 +56,31 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          textTheme: textTheme,
-          fontFamily: "FakeReceipt",
-          useMaterial3: true,
-          scaffoldBackgroundColor: backgroundColor,
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color(0xff5E48FE),
-              brightness: Brightness.dark,
-              dynamicSchemeVariant: DynamicSchemeVariant.fidelity)),
-      home: const LandingPage(),
+    return FutureBuilder(
+      future: Provider.of<StorageProvider>(context)
+          .storage
+          .read(key: "apiKey")
+          .then(
+        (value) {
+          return value == null ? const LandingPage() : const CameraPage();
+        },
+      ),
+      initialData: Container(),
+      builder: (context, snapshot) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              textTheme: textTheme,
+              fontFamily: "FakeReceipt",
+              useMaterial3: true,
+              scaffoldBackgroundColor: backgroundColor,
+              colorScheme: ColorScheme.fromSeed(
+                  seedColor: const Color(0xff5E48FE),
+                  brightness: Brightness.dark,
+                  dynamicSchemeVariant: DynamicSchemeVariant.fidelity)),
+          home: snapshot.data,
+        );
+      },
     );
   }
 }
