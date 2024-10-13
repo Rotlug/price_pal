@@ -48,9 +48,11 @@ class _CameraPageState extends State<CameraPage> {
     camera.takePicture().then(
       (value) {
         if (value != null) {
-          setState(() {
-            image = value;
-          });
+          setState(
+            () {
+              image = value;
+            },
+          );
         }
       },
     );
@@ -60,6 +62,7 @@ class _CameraPageState extends State<CameraPage> {
 class CameraButton extends StatefulWidget {
   final VoidCallback? onPressed;
   static const int animationDuration = 250;
+
   const CameraButton({super.key, this.onPressed});
 
   @override
@@ -74,7 +77,8 @@ class _CameraButtonState extends State<CameraButton> {
     return AnimatedScale(
       scale: scale,
       curve: Curves.easeIn,
-      duration: const Duration(milliseconds: CameraButton.animationDuration ~/ 2),
+      duration:
+          const Duration(milliseconds: CameraButton.animationDuration ~/ 2),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.white.withOpacity(0.5), width: 5),

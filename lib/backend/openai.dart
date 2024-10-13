@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
+import 'package:price_pal/providers/storage_provider.dart';
+import 'package:provider/provider.dart';
 
 const prompt = """
 Analyze the provided image of a supermarket shelf. Identify the products and their prices, and determine the cheapest product. Provide only the name of the cheapest product and its price in the format below.
@@ -55,18 +58,15 @@ Future<String?> analyse(String openAiKey, File imageFile) async {
     var data = json.decode(response.body);
     var contentString = data['choices']?.first['message']['content'] ?? '';
 
-    int jsonStartIndex = contentString.indexOf('{');
-    int jsonEndIndex = contentString.lastIndexOf('}');
-
-    if (jsonStartIndex != -1 && jsonEndIndex != -1) {
-      var jsonString =
-          contentString.substring(jsonStartIndex, jsonEndIndex + 1);
-      var contentData = json.decode(jsonString);
-
-      // Process the extracted JSON data
-      return contentData.toString();
-    }
+    return contentString;
   }
+
   return null;
 }
 
+Future<String?> sendToChatGPT(BuildContext context, File image) async {
+  String? apiKey = await Provider.of<StorageProvider>(context).storage.read(key: "apiKey");
+  String? result = await analyse(apiKey!, image);
+
+  return result;
+}
