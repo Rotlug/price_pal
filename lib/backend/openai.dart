@@ -38,8 +38,6 @@ Future<String?> analyse(String openAiKey, File imageFile) async {
           "content": [
             {
               "type": "text",
-              // "text": "What fish can you detect in thailand and sharks?"
-
               "text": prompt
             },
             {
