@@ -7,12 +7,15 @@ import 'package:price_pal/providers/storage_provider.dart';
 import 'package:provider/provider.dart';
 
 const prompt = """
-Analyze the provided image of a supermarket shelf. Identify the products and their prices, and determine the cheapest product. Provide only the name of the cheapest product and its price in the format below.
+Analyze the provided image of a supermarket shelf. Identify the products and their prices, and determine the cheapest product. If no products are found, output "Not found products". Provide only the name of the cheapest product and its price in the format below.
 
 Output Format:
 
 Cheapest Product: Product Name
 Price: Price
+
+If no products are found:
+No found products
 """;
 
 String fileToBase64(File imageFile) {
@@ -63,7 +66,7 @@ Future<String?> analyse(String openAiKey, File imageFile) async {
 }
 
 Future<String?> sendToChatGPT(BuildContext context, File image) async {
-  String? apiKey = await Provider.of<StorageProvider>(context).storage.read(key: "apiKey");
+  String? apiKey = await Provider.of<StorageProvider>(context, listen: false).storage.read(key: "apiKey");
   String? result = await analyse(apiKey!, image);
 
   return result;
