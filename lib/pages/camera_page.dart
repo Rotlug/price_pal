@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
-import 'package:native_camera_sound/native_camera_sound.dart';
+import 'package:price_pal/components/camera_button.dart';
+import 'package:price_pal/components/result_area.dart';
+import 'package:price_pal/components/revealer.dart';
 import 'package:price_pal/components/split_page.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:price_pal/providers/camera_provider.dart';
@@ -19,6 +21,8 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   XFile? image;
+  bool canTakePicture = true;
+  bool displayChoiceButtons = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,24 +30,34 @@ class _CameraPageState extends State<CameraPage> {
       child1: Stack(
         children: [
           (image == null) ? const CameraView() : ImagePreview(image: image!),
-          Column(
-            children: [
-              Expanded(child: Container()),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CameraButton(
-                  onPressed: takePicture,
-                ),
-              )
-            ],
+          Revealer(
+            revealed: canTakePicture,
+            hiddenOffset: const Offset(0, 108),
+            child: CameraButton(
+              onPressed: takePicture,
+            ),
+          ),
+          Revealer(
+            revealed: displayChoiceButtons,
+            hiddenOffset: const Offset(0, 108),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: ChoiceButtons(
+                onCancel: onPictureCanceled,
+                onAccept: onPictureAccepted,
+              ),
+            ),
           ),
           const AIEffectContainer()
         ],
       ),
+      child2: const ResultArea(productName: "yummmyyy :D"),
     );
   }
 
   void takePicture() {
+    if (!canTakePicture) return;
+
     final camera = Provider.of<CameraProvider>(context, listen: false);
     camera.takePicture().then(
       (value) {
@@ -51,86 +65,50 @@ class _CameraPageState extends State<CameraPage> {
           setState(
             () {
               image = value;
+              canTakePicture = false;
+              displayChoiceButtons = true;
             },
           );
         }
       },
     );
   }
-}
 
-class CameraButton extends StatefulWidget {
-  final VoidCallback? onPressed;
-  static const int animationDuration = 250;
-
-  const CameraButton({super.key, this.onPressed});
-
-  @override
-  State<CameraButton> createState() => _CameraButtonState();
-}
-
-class _CameraButtonState extends State<CameraButton> {
-  double scale = 1;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedScale(
-      scale: scale,
-      curve: Curves.easeIn,
-      duration:
-          const Duration(milliseconds: CameraButton.animationDuration ~/ 2),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white.withOpacity(0.5), width: 5),
-          shape: BoxShape.circle,
-        ),
-        child: FloatingActionButton(
-          onPressed: takePicture,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          shape: const CircleBorder(),
-        ),
-      ),
-    );
+  void onPictureCanceled() {
+    setState(() {
+      image = null;
+      canTakePicture = true;
+      displayChoiceButtons = false;
+    });
   }
 
-  void takePicture() {
-    NativeCameraSound.playShutter();
-
-    // Scale down
+  void onPictureAccepted() {
     setState(() {
-      scale = 0.9;
+      displayChoiceButtons = false;
     });
-
-    // Scale Back up
-    Future.delayed(
-      const Duration(milliseconds: CameraButton.animationDuration ~/ 2),
-      () => setState(
-        () {
-          scale = 1;
-        },
-      ),
-    );
-
-    if (widget.onPressed != null) widget.onPressed!();
   }
 }
 
 class AIEffectContainer extends StatelessWidget {
-  const AIEffectContainer({super.key});
+  final bool visible;
+  const AIEffectContainer({super.key, this.visible=true});
 
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
-      child: Container(
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-            inset: true,
-            spreadRadius: 12,
-            blurRadius: 80,
-            color: Theme.of(context).colorScheme.primaryContainer,
-          ),
-        ]),
+      child: AnimatedContainer(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              inset: true,
+              spreadRadius: visible ? 12 : 0,
+              blurRadius: visible ? 80 : 50,
+              color: visible ? Theme.of(context).colorScheme.primaryContainer : Colors.transparent,
+            ),
+          ],
+        ),
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.easeIn,
       ),
     );
   }
@@ -156,6 +134,39 @@ class ImagePreview extends StatelessWidget {
             File(image.path),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ChoiceButtons extends StatelessWidget {
+  final VoidCallback? onCancel;
+  final VoidCallback? onAccept;
+
+  const ChoiceButtons({super.key, this.onAccept, this.onCancel});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FloatingActionButton(
+            onPressed: onCancel,
+            backgroundColor: const Color(0xffFF4747),
+            shape: const CircleBorder(),
+            child: const Icon(Icons.delete_outline),
+          ),
+          const SizedBox(
+            width: 100,
+          ),
+          FloatingActionButton(
+            onPressed: onAccept,
+            shape: const CircleBorder(),
+            child: const Icon(Icons.check),
+          )
+        ],
       ),
     );
   }
