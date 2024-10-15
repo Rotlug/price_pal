@@ -53,7 +53,7 @@ class _CameraPageState extends State<CameraPage> {
           AIEffectContainer(visible: displayAIEffect,)
         ],
       ),
-      child2: const ResultArea(productName: "yummmyyy :D"),
+      child2: const ResultArea(productName: "yummmyyy :D", analysing: false,),
     );
   }
 

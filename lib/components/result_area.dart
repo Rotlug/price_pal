@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class DashedLinePainter extends CustomPainter {
   @override
@@ -19,8 +20,9 @@ class DashedLinePainter extends CustomPainter {
 
 class ResultArea extends StatelessWidget {
   final String productName;
+  final bool analysing;
 
-  const ResultArea({super.key, required this.productName});
+  const ResultArea({super.key, required this.productName, required this.analysing});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class ResultArea extends StatelessWidget {
                     .titleSmall!
                     .copyWith(fontFamily: "FakeReceipt"),
               ),
-              Text(
+              analysing ? const ProcessingText() : Text(
                 productName,
                 style: Theme.of(context)
                     .textTheme
@@ -72,5 +74,18 @@ class ResultArea extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ProcessingText extends StatelessWidget {
+  const ProcessingText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text("Analysing...", style: Theme.of(context).textTheme.displayLarge!.copyWith(color: Colors.grey.shade800),)
+        .animate(
+          onPlay: (controller) => controller.loop(),
+        )
+        .shimmer(duration: const Duration(seconds: 2), color: Colors.white.withOpacity(0.1));
   }
 }
