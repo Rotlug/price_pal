@@ -1,41 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-class WaveClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.lineTo(0, size.height);
-    var x = -18.0;
-    var numberOfWaves = 20;
-    var increment = size.width / numberOfWaves;
-    bool startFromTop = false;
-
-    while (x < size.width) {
-      if (startFromTop) {
-        path.lineTo(x, 0);
-        path.cubicTo(x + increment / 2, 0, x + increment / 2, size.height,
-            x + increment, size.height);
-      } else {
-        path.lineTo(x, size.height);
-        path.cubicTo(x + increment / 2, size.height, x + increment / 2, 0,
-            x + increment, 0);
-      }
-      x += increment;
-      startFromTop = !startFromTop;
-    }
-
-    path.lineTo(size.width, 0);
-    path.lineTo(0, 0);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
-}
-
 class DashedLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -93,27 +57,17 @@ class ResultArea extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Stack(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 0),
-                color: const Color(0xff282828),
-                child: const Padding(
-                  padding: EdgeInsets.only(top: 25),
-                  child: Center(child: Text("Hell",)),
-                ),
-              ),
-              Transform.translate(
-                offset: const Offset(0, -0.1), // Fixes some visual bug
-                child: ClipPath(
-                  clipper: WaveClipper(),
-                  child: Container(
-                    height: 15,
-                    color: const Color(0xff1B1B1B),
-                  ),
-                ),
-              ),
-            ],
+          ColorFiltered(
+            colorFilter: const ColorFilter.mode(
+              Color(0xff282828),
+              BlendMode.modulate,
+            ),
+            child: Image.asset("assets/images/intersect.png"),
+          ),
+          Expanded(
+            child: Container(
+              color: const Color(0xff282828),
+            ),
           ),
         ],
       ),
