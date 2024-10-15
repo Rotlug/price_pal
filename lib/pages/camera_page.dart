@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:price_pal/components/camera_button.dart';
 import 'package:price_pal/components/result_area.dart';
 import 'package:price_pal/components/revealer.dart';
@@ -23,6 +24,7 @@ class _CameraPageState extends State<CameraPage> {
   XFile? image;
   bool canTakePicture = true;
   bool displayChoiceButtons = false;
+  bool displayAIEffect = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class _CameraPageState extends State<CameraPage> {
               ),
             ),
           ),
-          const AIEffectContainer()
+          AIEffectContainer(visible: displayAIEffect,)
         ],
       ),
       child2: const ResultArea(productName: "yummmyyy :D"),
@@ -85,13 +87,21 @@ class _CameraPageState extends State<CameraPage> {
   void onPictureAccepted() {
     setState(() {
       displayChoiceButtons = false;
+      displayAIEffect = true;
+
+      Future.delayed(const Duration(seconds: 5), () {
+        setState(() {
+          displayAIEffect = false;
+        });
+      },);
     });
   }
 }
 
 class AIEffectContainer extends StatelessWidget {
   final bool visible;
-  const AIEffectContainer({super.key, this.visible=true});
+
+  const AIEffectContainer({super.key, this.visible = true});
 
   @override
   Widget build(BuildContext context) {
@@ -103,13 +113,23 @@ class AIEffectContainer extends StatelessWidget {
               inset: true,
               spreadRadius: visible ? 12 : 0,
               blurRadius: visible ? 80 : 50,
-              color: visible ? Theme.of(context).colorScheme.primaryContainer : Colors.transparent,
+              color: visible
+                  ? Theme.of(context).colorScheme.primaryContainer
+                  : Colors.transparent,
             ),
           ],
         ),
         duration: const Duration(milliseconds: 800),
         curve: Curves.easeIn,
-      ),
+      )
+          .animate(
+            autoPlay: true,
+            onPlay: (controller) => controller.repeat(reverse: false),
+          )
+          .shimmer(
+            color: Colors.deepPurple,
+            duration: const Duration(seconds: 3),
+          ),
     );
   }
 }
