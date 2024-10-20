@@ -21,8 +21,9 @@ class DashedLinePainter extends CustomPainter {
 class ResultArea extends StatelessWidget {
   final String productName;
   final bool analysing;
+  final List<String>? history = [];
 
-  const ResultArea({super.key, required this.productName, required this.analysing});
+  ResultArea({super.key, required this.productName, required this.analysing});
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +40,7 @@ class ResultArea extends StatelessWidget {
                 textAlign: TextAlign.left,
                 style: Theme.of(context)
                     .textTheme
-                    .titleSmall!
-                    .copyWith(fontFamily: "FakeReceipt"),
+                    .displayMedium!
               ),
               analysing ? const ProcessingText() : Text(
                 productName,
@@ -60,15 +60,15 @@ class ResultArea extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           ColorFiltered(
-            colorFilter: const ColorFilter.mode(
-              Color(0xff282828),
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.secondaryContainer,
               BlendMode.modulate,
             ),
             child: Image.asset("assets/images/intersect.png"),
           ),
           Expanded(
             child: Container(
-              color: const Color(0xff282828),
+              color: Theme.of(context).colorScheme.secondaryContainer,
             ),
           ),
         ],
@@ -86,6 +86,6 @@ class ProcessingText extends StatelessWidget {
         .animate(
           onPlay: (controller) => controller.loop(),
         )
-        .shimmer(duration: const Duration(seconds: 2), color: Colors.white.withOpacity(0.1));
+        .shimmer(duration: const Duration(seconds: 2), color: Colors.white.withOpacity(0.2));
   }
 }
