@@ -28,7 +28,7 @@ class _DecoratedContainerState extends State<DecoratedContainer> {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: const Color(0xff1B1B1B),
+              color: Theme.of(context).colorScheme.surfaceContainer,
               borderRadius: borderRadius,
             ),
             child: widget.child,

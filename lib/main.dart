@@ -11,10 +11,10 @@ const backgroundColor = Color(0xff111111);
 // Unspecified fontFamily = FakeReceipt
 const TextTheme textTheme = TextTheme(
   displayLarge: TextStyle(
-    fontSize: 28,
+    fontSize: 24,
   ),
   displayMedium: TextStyle(
-    fontSize: 14,
+    fontSize: 12,
     color: Color.fromRGBO(255, 255, 255, 0.5),
   ),
   titleSmall: TextStyle(
@@ -70,14 +70,19 @@ class MainApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-              textTheme: textTheme,
-              fontFamily: "FakeReceipt",
-              useMaterial3: true,
-              scaffoldBackgroundColor: backgroundColor,
-              colorScheme: ColorScheme.fromSeed(
-                  seedColor: const Color(0xff5E48FE),
-                  brightness: Brightness.dark,
-                  dynamicSchemeVariant: DynamicSchemeVariant.fidelity)),
+            textTheme: textTheme,
+            fontFamily: "FakeReceipt",
+            useMaterial3: true,
+            scaffoldBackgroundColor: backgroundColor,
+            colorScheme: ColorScheme.fromSeed(
+                    seedColor: const Color(0xff5E48FE),
+                    brightness: Brightness.dark,
+                    dynamicSchemeVariant: DynamicSchemeVariant.fidelity)
+                .copyWith(
+              surfaceContainer: const Color(0xff1B1B1B),
+              secondaryContainer: const Color(0xff282828),
+            ),
+          ),
           home: snapshot.data,
         );
       },
