@@ -15,7 +15,7 @@ class CameraView extends StatefulWidget {
 }
 
 class _CameraViewState extends State<CameraView> {
-  late final Provider<CameraProvider>camera;
+  late final Provider<CameraProvider> camera;
 
   @override
   Widget build(BuildContext context) {

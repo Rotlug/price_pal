@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image/image.dart' as img;
 
 class CameraProvider extends ChangeNotifier {
   CameraController? _controller;
@@ -24,10 +28,37 @@ class CameraProvider extends ChangeNotifier {
 
   CameraController? get controller => _controller;
 
-  Future<XFile?> takePicture() async {
+  Future<Image?> takePicture() async {
     if (_controller != null && _controller!.value.isInitialized) {
       try {
-        return await _controller!.takePicture();
+        final XFile picture = await _controller!.takePicture();
+        final DeviceOrientation orientation = _controller!.value.deviceOrientation;
+
+        // Load image into memory
+        final File imageFile = File(picture.path);
+        final img.Image image = img.decodeImage(await imageFile.readAsBytes())!;
+
+        img.Image fixedImage;
+        switch (orientation) {
+          case DeviceOrientation.portraitUp:
+            // No Rotation Needed
+            fixedImage = image;
+            break;
+          case DeviceOrientation.portraitDown:
+            fixedImage = img.copyRotate(image, angle: 180);
+            break;
+          case DeviceOrientation.landscapeLeft:
+            fixedImage = img.copyRotate(image, angle: -90);
+            break;
+          case DeviceOrientation.landscapeRight:
+            fixedImage = img.copyRotate(image, angle: 90);
+            break;
+          default:
+            fixedImage = image; // No rotation if unknown orientation
+        }
+
+
+        return Image.memory(img.encodePng(fixedImage));
       } catch (e) {
         //
       }

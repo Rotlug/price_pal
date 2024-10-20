@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:price_pal/components/camera_button.dart';
@@ -21,7 +18,7 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  XFile? image;
+  Image? image;
   bool canTakePicture = true;
   bool displayChoiceButtons = false;
   bool displayAIEffect = false;
@@ -29,6 +26,7 @@ class _CameraPageState extends State<CameraPage> {
   @override
   Widget build(BuildContext context) {
     return SplitPage(
+      // allowedOrientations: const [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
       child1: Stack(
         children: [
           (image == null) ? const CameraView() : ImagePreview(image: image!),
@@ -50,10 +48,15 @@ class _CameraPageState extends State<CameraPage> {
               ),
             ),
           ),
-          AIEffectContainer(visible: displayAIEffect,)
+          AIEffectContainer(
+            visible: displayAIEffect,
+          )
         ],
       ),
-      child2: const ResultArea(productName: "yummmyyy :D", analysing: false,),
+      child2: ResultArea(
+        productName: "************",
+        analysing: image != null,
+      ),
     );
   }
 
@@ -85,16 +88,23 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   void onPictureAccepted() {
-    setState(() {
-      displayChoiceButtons = false;
-      displayAIEffect = true;
+    setState(
+      () {
+        displayChoiceButtons = false;
+        displayAIEffect = true;
 
-      Future.delayed(const Duration(seconds: 5), () {
-        setState(() {
-          displayAIEffect = false;
-        });
-      },);
-    });
+        Future.delayed(
+          const Duration(seconds: 5),
+          () {
+            setState(
+              () {
+                displayAIEffect = false;
+              },
+            );
+          },
+        );
+      },
+    );
   }
 }
 
@@ -135,7 +145,7 @@ class AIEffectContainer extends StatelessWidget {
 }
 
 class ImagePreview extends StatelessWidget {
-  final XFile image;
+  final Image image;
 
   const ImagePreview({super.key, required this.image});
 
@@ -150,9 +160,7 @@ class ImagePreview extends StatelessWidget {
         fit: BoxFit.cover,
         child: SizedBox(
           width: 100, // the actual width is not important here
-          child: Image.file(
-            File(image.path),
-          ),
+          child: image,
         ),
       ),
     );
