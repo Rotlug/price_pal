@@ -22,7 +22,7 @@ class _SetupPageState extends State<SetupPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isReady = inputString.startsWith("sk-proj-") && inputString.length > 30;
+    bool isReady = inputString.startsWith("sk-") && inputString.length > 30;
 
     return SplitPage(
       child1: ImageFiltered(
