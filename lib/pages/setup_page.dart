@@ -18,10 +18,12 @@ class SetupPage extends StatefulWidget {
 }
 
 class _SetupPageState extends State<SetupPage> {
-  late String inputString;
+  String inputString = "";
 
   @override
   Widget build(BuildContext context) {
+    bool isReady = inputString.startsWith("sk-proj-") && inputString.length > 30;
+
     return SplitPage(
       child1: ImageFiltered(
         imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
@@ -33,10 +35,9 @@ class _SetupPageState extends State<SetupPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              padding: const EdgeInsets.only(top: 8, bottom: 24),
               child: Text("Your OpenAI Api Key", style: Theme.of(context).textTheme.displayLarge,),
             ),
-            const SizedBox(height: 8,),
             Text("Whats your open api key?", style: Theme.of(context).textTheme.displaySmall,),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -48,12 +49,12 @@ class _SetupPageState extends State<SetupPage> {
                 },
               ),
             ),
-            Text("Your API key is stored & encrypted on-device.", style: Theme.of(context).textTheme.titleSmall!.copyWith(color: const Color.fromRGBO(255, 255, 255, 0.2)),),
+            Text("Your API key is stored & encrypted on-device.", style: Theme.of(context).textTheme.titleSmall!.copyWith(color: const Color.fromRGBO(255, 255, 255, 0.2), fontSize: 14),),
             const Spacer(),
             DecoratedButton(
-              text: "Let's Start Saving Money!",
-              suggestedAction: true,
-              onPressed: () {
+              text: isReady ? "Let's Start Saving Money!" : "Insert API Key to continue",
+              suggestedAction: isReady,
+              onPressed: !isReady ? null : () {
                 Provider.of<StorageProvider>(context, listen: false)
                     .storage
                     .write(key: "apiKey", value: inputString)

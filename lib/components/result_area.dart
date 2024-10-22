@@ -133,7 +133,7 @@ class HistoryList extends StatelessWidget {
           itemBuilder: (context, index) {
             if (index == 0) {
               return Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(12),
                 child: Text(
                   "History of Products",
                   style: Theme.of(context).textTheme.displaySmall,
@@ -188,7 +188,7 @@ class PurchaseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.only(bottom: 8, left: 12, right: 12),
       child: Row(
         children: [
           Text(

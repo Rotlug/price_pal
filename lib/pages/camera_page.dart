@@ -93,6 +93,7 @@ class _CameraPageState extends State<CameraPage> {
     setState(() {
       image = null;
       canTakePicture = true;
+      displayAIEffect = false;
       displayChoiceButtons = false;
     });
   }
@@ -174,7 +175,8 @@ class AIEffectContainer extends StatelessWidget {
             onPlay: (controller) => controller.repeat(reverse: false),
           )
           .shimmer(
-            color: Colors.deepPurple,
+            color: Colors.blue,
+            angle: 70,
             duration: const Duration(seconds: 3),
           ),
     );

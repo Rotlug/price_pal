@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:price_pal/components/container.dart';
 
 enum DecoratedButtonStyle { normal, suggested }
 

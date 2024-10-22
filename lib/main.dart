@@ -44,15 +44,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => CameraProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => StorageProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => HistoryProvider(),
-        )
+        ChangeNotifierProvider(create: (context) => CameraProvider()),
+        ChangeNotifierProvider(create: (context) => StorageProvider()),
+        ChangeNotifierProvider(create: (context) => HistoryProvider())
       ],
       child: const MainApp(),
     ),
