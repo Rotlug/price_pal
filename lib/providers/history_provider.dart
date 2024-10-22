@@ -18,13 +18,10 @@ class HistoryProvider extends ChangeNotifier {
     return list.map((e) => Purchase.fromJson(e)).toList();
   }
 
-  Future<List<Purchase>> addToHistory(Purchase purchase) async {
+  Future<void> addToHistory(Purchase purchase) async {
     history.add(purchase);
     notifyListeners();
-
     await sp.setString("history", jsonEncode(history));
-    print(await sp.getString("history"));
-    return await [];
   }
 }
 
