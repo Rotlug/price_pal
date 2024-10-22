@@ -65,8 +65,8 @@ class ResultArea extends StatelessWidget {
                 ? const NoHistory()
                 : Revealer(
                     revealed: history.isNotEmpty,
-                    duration: 700,
-                    hiddenOffset: const Offset(0, 300),
+                    duration: 800,
+                    hiddenOffset: const Offset(0, 400),
                     child: Receipt(
                       child: HistoryList(history: history),
                     ),
