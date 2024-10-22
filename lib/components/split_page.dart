@@ -9,24 +9,36 @@ class SplitPage extends StatefulWidget {
   final Widget? child2;
   final List<DeviceOrientation>? allowedOrientations;
 
-  const SplitPage(
-      {super.key, this.child1, this.child2, this.allowedOrientations});
+  final int minHeight;
+  final int maxHeight;
 
-  static const minHeight = 200;
-  static const maxHeight = 300;
+  const SplitPage({
+    super.key,
+    this.child1,
+    this.child2,
+    this.allowedOrientations,
+    this.minHeight = 200,
+    this.maxHeight = 300,
+  });
 
   @override
   State<SplitPage> createState() => _SplitPageState();
 }
 
 class _SplitPageState extends State<SplitPage> {
-  double height = 250;
+  late double height;
+
+  @override
+  void initState() {
+    super.initState();
+    height = (widget.minHeight + widget.maxHeight) / 2; // Start in the middle
+  }
 
   void setHeight(double delta) {
     setState(
       () {
         height -= delta;
-        if (height > SplitPage.maxHeight || height < SplitPage.minHeight) {
+        if (height > widget.maxHeight || height < widget.minHeight) {
           // Revert the change if height exceeds boundaries
           height += delta;
         }
