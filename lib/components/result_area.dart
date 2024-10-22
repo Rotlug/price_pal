@@ -140,9 +140,9 @@ class HistoryList extends StatelessWidget {
                 ),
               );
             }
-            return PurchaseTile(purchase: history[history.length - index]);
+            return PurchaseTile(purchase: history[history.length - 1]);
           },
-          itemCount: history.length,
+          itemCount: history.length + 1,
         ),
         IgnorePointer(
           child: Container(

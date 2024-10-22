@@ -43,7 +43,10 @@ class _CameraPageState extends State<CameraPage> {
             revealed: canTakePicture,
             hiddenOffset: const Offset(0, 108),
             child: CameraButton(
-              onPressed: takePicture,
+              onPressed: () {
+                takePicture();
+                onPictureCanceled();
+              },
             ),
           ),
           Revealer(
@@ -100,14 +103,13 @@ class _CameraPageState extends State<CameraPage> {
       displayChoiceButtons = false;
     });
 
-    String? response = await sendToChatGPT(context, await assetToBytes("assets/images/test.png"));
+    String? response = await sendToChatGPT(context, imageBytes!);
     if (response == null || response.toLowerCase().contains("no data")) return;
     response = response.toLowerCase();
 
     onPictureCanceled();
     Purchase? purchase;
 
-    print("AAAAAAAAAAAA: $response");
     try {
       String productName = response.split("product:")[1].split("price")[0];
       String price = response.split("price:")[1];
@@ -125,7 +127,6 @@ class _CameraPageState extends State<CameraPage> {
     );
 
     historyProvider.addToHistory(purchase);
-    onPictureCanceled();
   }
 }
 

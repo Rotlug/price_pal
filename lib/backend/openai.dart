@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
@@ -57,16 +58,18 @@ Future<String?> analyse(String openAiKey, Uint8List imageFile) async {
     return contentString;
   }
 
+  int error = response.statusCode;
+  log("PROBLEM! $error");
+
   return null;
 }
-
-int i = 0;
 
 Future<String?> sendToChatGPT(BuildContext context, Uint8List image) async {
   if (!context.mounted) return null;
 
-  // String? apiKey = await Provider.of<StorageProvider>(context, listen: false).storage.read(key: "apiKey");
-  // String? result = await analyse(apiKey!, image);
-  i++;
-  return "Cheapest Product: Doritos #$i \n Price: 50\$";
+  String? apiKey = await Provider.of<StorageProvider>(context, listen: false).storage.read(key: "apiKey");
+  String? result = await analyse(apiKey!, image);
+
+  log("RESULT $result");
+  return result;
 }
