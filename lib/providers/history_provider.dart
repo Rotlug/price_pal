@@ -23,8 +23,7 @@ class HistoryProvider extends ChangeNotifier {
     notifyListeners();
 
     await sp.setString("history", jsonEncode(history));
-    print(await sp.getString("history"));
-    return await [];
+    return [];
   }
 }
 
