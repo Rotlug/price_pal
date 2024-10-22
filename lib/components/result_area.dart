@@ -61,18 +61,16 @@ class ResultArea extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Expanded(
-            child: Stack(
-              children: [
-                const NoHistory(),
-                Revealer(
-                  revealed: history.isNotEmpty,
-                    hiddenOffset: const Offset(0, 400),
+            child: history.isEmpty
+                ? const NoHistory()
+                : Revealer(
+                    revealed: history.isNotEmpty,
                     duration: 700,
+                    hiddenOffset: const Offset(0, 300),
                     child: Receipt(
-                  child: HistoryList(history: history),
-                ))
-              ],
-            ),
+                      child: HistoryList(history: history),
+                    ),
+                  ),
           )
         ],
       ),
@@ -108,24 +106,22 @@ class Receipt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          ColorFiltered(
-            colorFilter: ColorFilter.mode(
-              Theme.of(context).colorScheme.secondaryContainer,
-              BlendMode.modulate,
-            ),
-            child: Image.asset("assets/images/intersect.png"),
+    return Column(
+      children: [
+        ColorFiltered(
+          colorFilter: ColorFilter.mode(
+            Theme.of(context).colorScheme.secondaryContainer,
+            BlendMode.modulate,
           ),
-          Expanded(
-            child: Container(
-              color: Theme.of(context).colorScheme.secondaryContainer,
-              child: child,
-            ),
+          child: Image.asset("assets/images/intersect.png"),
+        ),
+        Expanded(
+          child: Container(
+            color: Theme.of(context).colorScheme.secondaryContainer,
+            child: child,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -173,19 +169,17 @@ class NoHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Image.asset("assets/images/nohistory.png"),
-          Center(
-            child: Text(
-              "No History",
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
-          )
-        ],
-      ),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Image.asset("assets/images/nohistory.png"),
+        Center(
+          child: Text(
+            "No History",
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+        )
+      ],
     );
   }
 }
