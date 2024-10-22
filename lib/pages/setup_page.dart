@@ -30,17 +30,28 @@ class _SetupPageState extends State<SetupPage> {
       child2: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InputTextField(
-              onChanged: (value) {
-                setState(() {
-                  inputString = value;
-                });
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Text("Your OpenAI Api Key", style: Theme.of(context).textTheme.displayLarge,),
             ),
+            const SizedBox(height: 8,),
+            Text("Whats your open api key?", style: Theme.of(context).textTheme.displaySmall,),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: InputTextField(
+                onChanged: (value) {
+                  setState(() {
+                    inputString = value;
+                  });
+                },
+              ),
+            ),
+            Text("Your API key is stored & encrypted on-device.", style: Theme.of(context).textTheme.titleSmall!.copyWith(color: const Color.fromRGBO(255, 255, 255, 0.2)),),
             const Spacer(),
             DecoratedButton(
-              text: "Get Started",
+              text: "Lets Start Saving Money!",
               suggestedAction: true,
               onPressed: () {
                 Provider.of<StorageProvider>(context, listen: false)
@@ -82,9 +93,10 @@ class InputTextField extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: TextField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: "Insert your api key",
+                hintStyle: Theme.of(context).textTheme.displayMedium
               ),
               onChanged: onChanged,
             ),
