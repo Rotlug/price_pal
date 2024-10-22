@@ -35,20 +35,16 @@ class ResultArea extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Cheapest Product",
-                textAlign: TextAlign.left,
-                style: Theme.of(context)
-                    .textTheme
-                    .displayMedium!
-              ),
-              analysing ? const ProcessingText() : Text(
-                productName,
-                style: Theme.of(context)
-                    .textTheme
-                    .displayLarge!
-                    .copyWith(color: const Color.fromRGBO(255, 255, 255, 0.7)),
-              )
+              Text("Cheapest Product",
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.displayMedium!),
+              analysing
+                  ? const ProcessingText()
+                  : Text(
+                      productName,
+                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                          color: const Color.fromRGBO(255, 255, 255, 0.7)),
+                    )
             ],
           ),
           const SizedBox(height: 10),
@@ -59,18 +55,7 @@ class ResultArea extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          ColorFiltered(
-            colorFilter: ColorFilter.mode(
-              Theme.of(context).colorScheme.secondaryContainer,
-              BlendMode.modulate,
-            ),
-            child: Image.asset("assets/images/intersect.png"),
-          ),
-          Expanded(
-            child: Container(
-              color: Theme.of(context).colorScheme.secondaryContainer,
-            ),
-          ),
+          history!.isNotEmpty ? const Receipt() : const NoHistory(),
         ],
       ),
     );
@@ -82,10 +67,63 @@ class ProcessingText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("Analysing...", style: Theme.of(context).textTheme.displayLarge!.copyWith(color: Colors.grey.shade800),)
+    return Text(
+      "Analysing...",
+      style: Theme.of(context)
+          .textTheme
+          .displayLarge!
+          .copyWith(color: Colors.grey.shade800),
+    )
         .animate(
           onPlay: (controller) => controller.loop(),
         )
-        .shimmer(duration: const Duration(seconds: 2), color: Colors.white.withOpacity(0.2));
+        .shimmer(
+            duration: const Duration(seconds: 2),
+            color: Colors.white.withOpacity(0.2));
+  }
+}
+
+class Receipt extends StatelessWidget {
+  final Widget? child;
+
+  const Receipt({super.key, this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          ColorFiltered(
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.secondaryContainer,
+              BlendMode.modulate,
+            ),
+            child: Image.asset("assets/images/intersect.png"),
+          ),
+          Expanded(
+            child: Container(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              child: child,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class NoHistory extends StatelessWidget {
+  const NoHistory({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Stack(
+        children: [
+          Center(child: Image.asset("assets/images/nohistory.png")),
+          Center(child: Text("No History", style: Theme.of(context).textTheme.displayMedium,))
+        ],
+      ),
+    );
   }
 }
