@@ -51,7 +51,7 @@ class _SetupPageState extends State<SetupPage> {
             Text("Your API key is stored & encrypted on-device.", style: Theme.of(context).textTheme.titleSmall!.copyWith(color: const Color.fromRGBO(255, 255, 255, 0.2)),),
             const Spacer(),
             DecoratedButton(
-              text: "Lets Start Saving Money!",
+              text: "Let's Start Saving Money!",
               suggestedAction: true,
               onPressed: () {
                 Provider.of<StorageProvider>(context, listen: false)
