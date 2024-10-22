@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -104,7 +106,11 @@ class _CameraPageState extends State<CameraPage> {
     });
 
     String? response = await sendToChatGPT(context, imageBytes!);
-    if (response == null || response.toLowerCase().contains("no data")) return;
+    if (response == null || response.toLowerCase().contains("no product")) {
+      log("ERROR, NO DATA FOUND");
+      return;
+    }
+
     response = response.toLowerCase();
 
     onPictureCanceled();
@@ -118,11 +124,15 @@ class _CameraPageState extends State<CameraPage> {
       //
     }
 
+    setState(() {
+      displayAIEffect = false;
+    });
+
     if (purchase == null) return;
+
     setState(
       () {
         cheapestProduct = purchase!.item;
-        displayAIEffect = false;
       },
     );
 

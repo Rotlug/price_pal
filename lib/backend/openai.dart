@@ -8,7 +8,7 @@ import 'package:price_pal/providers/storage_provider.dart';
 import 'package:provider/provider.dart';
 
 const prompt = """
-Analyze the provided image of a supermarket shelf. Identify the products and their prices, and determine the cheapest product. If no products are found, output "Not found products". Provide only the name of the cheapest product and its price in the format below.
+Analyze the provided image of a supermarket shelf. Identify the products and their prices, and determine the cheapest product. If no products are found, output "No Products". Provide only the name of the cheapest product and its price in the format below.
 
 Output Format:
 
