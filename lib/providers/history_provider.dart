@@ -8,6 +8,7 @@ class HistoryProvider extends ChangeNotifier {
 
   HistoryProvider() {
     getHistory().then((value) => history = value);
+    notifyListeners();
   }
 
   Future<List<Purchase>> getHistory() async {

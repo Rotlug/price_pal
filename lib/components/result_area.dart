@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:price_pal/components/revealer.dart';
 import 'package:price_pal/providers/history_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -59,11 +60,20 @@ class ResultArea extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          history.isNotEmpty
-              ? Receipt(
+          Expanded(
+            child: Stack(
+              children: [
+                const NoHistory(),
+                Revealer(
+                  revealed: history.isNotEmpty,
+                    hiddenOffset: const Offset(0, 400),
+                    duration: 700,
+                    child: Receipt(
                   child: HistoryList(history: history),
-                )
-              : const NoHistory(),
+                ))
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -147,11 +157,10 @@ class HistoryList extends StatelessWidget {
         IgnorePointer(
           child: Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Theme.of(context).colorScheme.secondaryContainer.withOpacity(0),
-                Theme.of(context).colorScheme.secondaryContainer
-              ], begin: Alignment.topCenter, end: Alignment.bottomCenter)
-            ),
+                gradient: LinearGradient(colors: [
+              Theme.of(context).colorScheme.secondaryContainer.withOpacity(0),
+              Theme.of(context).colorScheme.secondaryContainer
+            ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
           ),
         )
       ],
@@ -166,8 +175,9 @@ class NoHistory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Stack(
+        alignment: Alignment.center,
         children: [
-          Center(child: Image.asset("assets/images/nohistory.png")),
+          Image.asset("assets/images/nohistory.png"),
           Center(
             child: Text(
               "No History",

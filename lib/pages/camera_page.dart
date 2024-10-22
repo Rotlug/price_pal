@@ -35,7 +35,7 @@ class _CameraPageState extends State<CameraPage> {
   @override
   Widget build(BuildContext context) {
     historyProvider = Provider.of<HistoryProvider>(context);
-
+    
     return SplitPage(
       // allowedOrientations: const [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
       child1: Stack(
@@ -46,8 +46,9 @@ class _CameraPageState extends State<CameraPage> {
             hiddenOffset: const Offset(0, 108),
             child: CameraButton(
               onPressed: () {
-                takePicture();
-                onPictureCanceled();
+                // takePicture();
+                // onPictureCanceled();
+                historyProvider.addToHistory(Purchase("Potatoes", "12₪"));
               },
             ),
           ),
