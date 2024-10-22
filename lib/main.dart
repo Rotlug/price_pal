@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:price_pal/pages/camera_page.dart';
 import 'package:price_pal/pages/landing_page.dart';
 import 'package:price_pal/providers/camera_provider.dart';
+import 'package:price_pal/providers/history_provider.dart';
 import 'package:price_pal/providers/storage_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -44,6 +45,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => StorageProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HistoryProvider(),
         )
       ],
       child: const MainApp(),

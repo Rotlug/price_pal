@@ -6,6 +6,7 @@ import 'package:price_pal/components/revealer.dart';
 import 'package:price_pal/components/split_page.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:price_pal/providers/camera_provider.dart';
+import 'package:price_pal/providers/history_provider.dart';
 
 import '../components/camera_view.dart';
 import 'package:provider/provider.dart';
@@ -22,9 +23,12 @@ class _CameraPageState extends State<CameraPage> {
   bool canTakePicture = true;
   bool displayChoiceButtons = false;
   bool displayAIEffect = false;
+  late HistoryProvider historyProvider;
 
   @override
   Widget build(BuildContext context) {
+    historyProvider = Provider.of<HistoryProvider>(context);
+
     return SplitPage(
       // allowedOrientations: const [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
       child1: Stack(
@@ -72,6 +76,8 @@ class _CameraPageState extends State<CameraPage> {
               image = value;
               canTakePicture = false;
               displayChoiceButtons = true;
+
+              historyProvider.addToHistory(Purchase("hello", "3.50"));
             },
           );
         }

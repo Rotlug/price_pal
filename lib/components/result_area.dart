@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:price_pal/providers/history_provider.dart';
+import 'package:provider/provider.dart';
 
 class DashedLinePainter extends CustomPainter {
   @override
@@ -21,12 +23,14 @@ class DashedLinePainter extends CustomPainter {
 class ResultArea extends StatelessWidget {
   final String productName;
   final bool analysing;
-  final List<String>? history = [];
 
-  ResultArea({super.key, required this.productName, required this.analysing});
+  const ResultArea(
+      {super.key, required this.productName, required this.analysing});
 
   @override
   Widget build(BuildContext context) {
+    List<Purchase> history = Provider.of<HistoryProvider>(context).history;
+
     return Padding(
       padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
       child: Column(
@@ -35,16 +39,16 @@ class ResultArea extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Cheapest Product",
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.displayMedium!),
+              Text(
+                "Cheapest Product",
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.displayMedium!,
+              ),
               analysing
                   ? const ProcessingText()
-                  : Text(
-                      productName,
+                  : Text(productName,
                       style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          color: const Color.fromRGBO(255, 255, 255, 0.7)),
-                    )
+                          color: const Color.fromRGBO(255, 255, 255, 0.7)))
             ],
           ),
           const SizedBox(height: 10),
@@ -55,7 +59,7 @@ class ResultArea extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          history!.isNotEmpty ? const Receipt() : const NoHistory(),
+          history.isNotEmpty ? Receipt(child: HistoryList(history: history),) : const NoHistory(),
         ],
       ),
     );
@@ -112,6 +116,24 @@ class Receipt extends StatelessWidget {
   }
 }
 
+class HistoryList extends StatelessWidget {
+  final List<Purchase> history;
+
+  const HistoryList({super.key, required this.history});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(history[index].item),
+        );
+      },
+      itemCount: history.length,
+    );
+  }
+}
+
 class NoHistory extends StatelessWidget {
   const NoHistory({super.key});
 
@@ -121,7 +143,12 @@ class NoHistory extends StatelessWidget {
       child: Stack(
         children: [
           Center(child: Image.asset("assets/images/nohistory.png")),
-          Center(child: Text("No History", style: Theme.of(context).textTheme.displayMedium,))
+          Center(
+            child: Text(
+              "No History",
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
+          )
         ],
       ),
     );
