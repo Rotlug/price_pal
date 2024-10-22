@@ -15,11 +15,15 @@ const TextTheme textTheme = TextTheme(
     fontSize: 24,
   ),
   displayMedium: TextStyle(
-    fontSize: 12,
-    color: Color.fromRGBO(255, 255, 255, 0.5),
+    fontSize: 14,
+    color: Color(0xff4B4B4B),
+  ),
+  displaySmall: TextStyle(
+    fontSize: 14,
+    color: Color(0xff777777),
   ),
   titleSmall: TextStyle(
-    color: Color.fromRGBO(255, 255, 255, 0.5),
+    color: Color(0xff777777),
     fontSize: 14,
     fontFamily: "Inter",
   ),

@@ -42,7 +42,7 @@ class ResultArea extends StatelessWidget {
               Text(
                 "Cheapest Product",
                 textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.displayMedium!,
+                style: Theme.of(context).textTheme.displaySmall!,
               ),
               analysing
                   ? const ProcessingText()
@@ -59,7 +59,11 @@ class ResultArea extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          history.isNotEmpty ? Receipt(child: HistoryList(history: history),) : const NoHistory(),
+          history.isNotEmpty
+              ? Receipt(
+                  child: HistoryList(history: history),
+                )
+              : const NoHistory(),
         ],
       ),
     );
@@ -123,13 +127,34 @@ class HistoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(history[index].item),
-        );
-      },
-      itemCount: history.length,
+    return Stack(
+      children: [
+        ListView.builder(
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  "History of Products",
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+              );
+            }
+            return PurchaseTile(purchase: history[history.length - index]);
+          },
+          itemCount: history.length,
+        ),
+        IgnorePointer(
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                Theme.of(context).colorScheme.secondaryContainer.withOpacity(0),
+                Theme.of(context).colorScheme.secondaryContainer
+              ], begin: Alignment.topCenter, end: Alignment.bottomCenter)
+            ),
+          ),
+        )
+      ],
     );
   }
 }
@@ -149,6 +174,32 @@ class NoHistory extends StatelessWidget {
               style: Theme.of(context).textTheme.displayMedium,
             ),
           )
+        ],
+      ),
+    );
+  }
+}
+
+class PurchaseTile extends StatelessWidget {
+  final Purchase purchase;
+
+  const PurchaseTile({super.key, required this.purchase});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Row(
+        children: [
+          Text(
+            purchase.item,
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+          const Spacer(),
+          Text(
+            purchase.price,
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
         ],
       ),
     );

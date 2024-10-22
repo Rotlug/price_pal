@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:price_pal/backend/openai.dart';
 import 'package:price_pal/components/camera_button.dart';
 import 'package:price_pal/components/result_area.dart';
 import 'package:price_pal/components/revealer.dart';
@@ -20,9 +22,12 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   Image? image;
+  Uint8List? imageBytes;
   bool canTakePicture = true;
   bool displayChoiceButtons = false;
   bool displayAIEffect = false;
+  String cheapestProduct = "************";
+
   late HistoryProvider historyProvider;
 
   @override
@@ -58,31 +63,25 @@ class _CameraPageState extends State<CameraPage> {
         ],
       ),
       child2: ResultArea(
-        productName: "************",
-        analysing: image != null,
+        productName: cheapestProduct,
+        analysing: displayAIEffect,
       ),
     );
   }
 
-  void takePicture() {
+  void takePicture() async {
     if (!canTakePicture) return;
 
     final camera = Provider.of<CameraProvider>(context, listen: false);
-    camera.takePicture().then(
-      (value) {
-        if (value != null) {
-          setState(
-            () {
-              image = value;
-              canTakePicture = false;
-              displayChoiceButtons = true;
+    Uint8List? pic = await camera.takePicture();
+    if (pic == null) return;
 
-              historyProvider.addToHistory(Purchase("hello", "3.50"));
-            },
-          );
-        }
-      },
-    );
+    setState(() {
+      canTakePicture = false;
+      image = Image.memory(pic);
+      imageBytes = pic;
+      displayChoiceButtons = true;
+    });
   }
 
   void onPictureCanceled() {
@@ -93,25 +92,46 @@ class _CameraPageState extends State<CameraPage> {
     });
   }
 
-  void onPictureAccepted() {
+  void onPictureAccepted() async {
+    if (imageBytes == null) return;
+
+    setState(() {
+      displayAIEffect = true;
+      displayChoiceButtons = false;
+    });
+
+    String? response = await sendToChatGPT(context, await assetToBytes("assets/images/test.png"));
+    if (response == null || response.toLowerCase().contains("no data")) return;
+    response = response.toLowerCase();
+
+    onPictureCanceled();
+    Purchase? purchase;
+
+    print("AAAAAAAAAAAA: $response");
+    try {
+      String productName = response.split("product:")[1].split("price")[0];
+      String price = response.split("price:")[1];
+      purchase = Purchase(productName.trim(), price.trim());
+    } catch (e) {
+      //
+    }
+
+    if (purchase == null) return;
     setState(
       () {
-        displayChoiceButtons = false;
-        displayAIEffect = true;
-
-        Future.delayed(
-          const Duration(seconds: 5),
-          () {
-            setState(
-              () {
-                displayAIEffect = false;
-              },
-            );
-          },
-        );
+        cheapestProduct = purchase!.item;
+        displayAIEffect = false;
       },
     );
+
+    historyProvider.addToHistory(purchase);
+    onPictureCanceled();
   }
+}
+
+Future<Uint8List> assetToBytes(String assetPath) async {
+  ByteData data = await rootBundle.load(assetPath);
+  return data.buffer.asUint8List();
 }
 
 class AIEffectContainer extends StatelessWidget {

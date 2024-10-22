@@ -28,7 +28,7 @@ class CameraProvider extends ChangeNotifier {
 
   CameraController? get controller => _controller;
 
-  Future<Image?> takePicture() async {
+  Future<Uint8List?> takePicture() async {
     if (_controller != null && _controller!.value.isInitialized) {
       try {
         final XFile picture = await _controller!.takePicture();
@@ -58,7 +58,7 @@ class CameraProvider extends ChangeNotifier {
         }
 
 
-        return Image.memory(img.encodePng(fixedImage));
+        return img.encodePng(fixedImage);
       } catch (e) {
         //
       }

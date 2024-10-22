@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
@@ -18,13 +18,8 @@ If no products are found:
 No found products
 """;
 
-String fileToBase64(File imageFile) {
-  List<int> imageBytes = imageFile.readAsBytesSync();
-  return base64Encode(imageBytes);
-}
-
-Future<String?> analyse(String openAiKey, File imageFile) async {
-  String fileBase64 = fileToBase64(imageFile);
+Future<String?> analyse(String openAiKey, Uint8List imageFile) async {
+  String fileBase64 = base64Encode(imageFile);
 
   Response response = await post(
     Uri.parse('https://api.openai.com/v1/chat/completions'),
@@ -65,9 +60,13 @@ Future<String?> analyse(String openAiKey, File imageFile) async {
   return null;
 }
 
-Future<String?> sendToChatGPT(BuildContext context, File image) async {
-  String? apiKey = await Provider.of<StorageProvider>(context, listen: false).storage.read(key: "apiKey");
-  String? result = await analyse(apiKey!, image);
+int i = 0;
 
-  return result;
+Future<String?> sendToChatGPT(BuildContext context, Uint8List image) async {
+  if (!context.mounted) return null;
+
+  // String? apiKey = await Provider.of<StorageProvider>(context, listen: false).storage.read(key: "apiKey");
+  // String? result = await analyse(apiKey!, image);
+  i++;
+  return "Cheapest Product: Doritos #$i \n Price: 50\$";
 }
