@@ -51,17 +51,12 @@ Future<String?> analyse(String openAiKey, Uint8List imageFile) async {
     }),
   );
 
-  if (response.statusCode == 200) {
-    var data = json.decode(response.body);
-    var contentString = data['choices']?.first['message']['content'] ?? '';
+  if (response.statusCode != 200) return null;
 
-    return contentString;
-  }
+  var data = json.decode(response.body);
+  var contentString = data['choices']?.first['message']['content'];
 
-  int error = response.statusCode;
-  log("PROBLEM! $error");
-
-  return null;
+  return contentString;
 }
 
 Future<String?> sendToChatGPT(BuildContext context, Uint8List image) async {
