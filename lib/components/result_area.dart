@@ -146,7 +146,7 @@ class HistoryList extends StatelessWidget {
                 ),
               );
             }
-            return PurchaseTile(purchase: history[history.length - 1]);
+            return PurchaseTile(purchase: history[index - 1]);
           },
           itemCount: history.length + 1,
         ),
@@ -199,7 +199,7 @@ class PurchaseTile extends StatelessWidget {
             purchase.item,
             style: Theme.of(context).textTheme.displayMedium,
           ),
-          const Spacer(),
+          const AsteriskSeparator(),
           Text(
             purchase.price,
             style: Theme.of(context).textTheme.displayMedium,
@@ -207,5 +207,46 @@ class PurchaseTile extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class AsteriskSeparator extends StatelessWidget {
+  const AsteriskSeparator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Center(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Get available width
+            double totalWidth = constraints.maxWidth;
+      
+            // Calculate how many asterisks will fit
+            double asteriskWidth = _getTextWidth('*', context);
+            int numAsterisks = (totalWidth / asteriskWidth).floor();
+      
+            // Create a string of asterisks
+            String asterisks = '*' * numAsterisks;
+      
+            // Return the calculated asterisks as a Text widget
+            return Text(
+              asterisks,
+              style: Theme.of(context).textTheme.displayMedium!.copyWith(color: const Color.fromRGBO(255, 255, 255, 0.05)), // Apply the same style
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  // Calculate width of text
+  double _getTextWidth(String text, BuildContext context) {
+    TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: Theme.of(context).textTheme.displayMedium),
+      // maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout(minWidth: 0, maxWidth: double.infinity);
+    return textPainter.size.width;
   }
 }

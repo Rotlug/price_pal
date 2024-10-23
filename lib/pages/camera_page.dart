@@ -106,7 +106,7 @@ class _CameraPageState extends State<CameraPage> {
       displayChoiceButtons = false;
     });
 
-    String? response = await sendToChatGPT(context, await assetToBytes("assets/images/test.png"));
+    String? response = await sendToChatGPT(context, imageBytes!);
     if (response == null || response.toLowerCase().contains("no product")) {
       log("ERROR, NO DATA FOUND");
       return;
