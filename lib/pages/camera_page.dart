@@ -35,7 +35,7 @@ class _CameraPageState extends State<CameraPage> {
   @override
   Widget build(BuildContext context) {
     historyProvider = Provider.of<HistoryProvider>(context);
-    
+
     return SplitPage(
       // allowedOrientations: const [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
       child1: Stack(
@@ -106,7 +106,7 @@ class _CameraPageState extends State<CameraPage> {
       displayChoiceButtons = false;
     });
 
-    String? response = await sendToChatGPT(context, imageBytes!);
+    String? response = await sendToChatGPT(context, await assetToBytes("assets/images/test.png"));
     if (response == null || response.toLowerCase().contains("no product")) {
       log("ERROR, NO DATA FOUND");
       return;
@@ -134,10 +134,9 @@ class _CameraPageState extends State<CameraPage> {
     setState(
       () {
         cheapestProduct = purchase!.item;
+        historyProvider.addToHistory(purchase);
       },
     );
-
-    historyProvider.addToHistory(purchase);
   }
 }
 

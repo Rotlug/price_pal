@@ -8,7 +8,6 @@ class HistoryProvider extends ChangeNotifier {
 
   HistoryProvider() {
     getHistory().then((value) => history = value);
-    notifyListeners();
   }
 
   Future<List<Purchase>> getHistory() async {
@@ -16,7 +15,12 @@ class HistoryProvider extends ChangeNotifier {
     if (historyJson == null) return [];
 
     List<dynamic> list = jsonDecode(historyJson);
-    return list.map((e) => Purchase.fromJson(e)).toList();
+    List<Purchase> result = list.map((e) => Purchase.fromJson(e)).toList();
+
+    history = result;
+    notifyListeners();
+
+    return result;
   }
 
   Future<void> addToHistory(Purchase purchase) async {

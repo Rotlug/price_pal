@@ -26,11 +26,10 @@ Future<String?> analyse(String openAiKey, Uint8List imageFile) async {
     Uri.parse('https://api.openai.com/v1/chat/completions'),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $openAiKey', // Replace with your actual API Key
+      'Authorization': 'Bearer $openAiKey',
     },
     body: json.encode({
       'model': 'gpt-4o',
-      // Specify the model, replace with the actual model you want to use
       'messages': [
         {
           'role': 'user',
@@ -47,7 +46,6 @@ Future<String?> analyse(String openAiKey, Uint8List imageFile) async {
         }
       ],
       'max_tokens': 1000
-      // Increase this value as needed
     }),
   );
 
