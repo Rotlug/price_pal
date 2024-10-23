@@ -53,8 +53,8 @@ Future<String?> analyse(String openAiKey, Uint8List imageFile) async {
 
   if (response.statusCode != 200) return null;
 
-  var data = json.decode(response.body);
-  var contentString = data['choices']?.first['message']['content'];
+  Map<dynamic, dynamic> data = json.decode(response.body);
+  String? contentString = data['choices'].first['message']['content'];
 
   return contentString;
 }
