@@ -25,6 +25,7 @@ class _SetupPageState extends State<SetupPage> {
     bool isReady = inputString.toLowerCase().startsWith("sk-") && inputString.length > 30;
 
     return SplitPage(
+      minHeight: 250,
       child1: ImageFiltered(
         imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: const CameraView(),
