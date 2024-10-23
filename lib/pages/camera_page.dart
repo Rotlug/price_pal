@@ -174,7 +174,7 @@ class AIEffectContainer extends StatelessWidget {
             onPlay: (controller) => controller.repeat(reverse: false),
           )
           .shimmer(
-            color: Colors.blue,
+            color: const Color(0xffDFDAFF),
             angle: 70,
             duration: const Duration(seconds: 3),
           ),
