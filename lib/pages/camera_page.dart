@@ -46,9 +46,8 @@ class _CameraPageState extends State<CameraPage> {
             hiddenOffset: const Offset(0, 108),
             child: CameraButton(
               onPressed: () {
-                // takePicture();
-                // onPictureCanceled();
-                historyProvider.addToHistory(Purchase("Potatoes", "12₪"));
+                takePicture();
+                onPictureCanceled();
               },
             ),
           ),
