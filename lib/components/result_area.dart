@@ -145,6 +145,7 @@ class HistoryList extends StatelessWidget {
     return Stack(
       children: [
         ListView.builder(
+          reverse: false,
           itemBuilder: (context, index) {
             if (index == 0) {
               return Padding(
@@ -155,7 +156,7 @@ class HistoryList extends StatelessWidget {
                 ),
               );
             }
-            return PurchaseTile(purchase: history[index - 1]);
+            return PurchaseTile(purchase: history[history.length - index]);
           },
           itemCount: history.length + 1,
         ),
