@@ -43,10 +43,7 @@ class _CameraPageState extends State<CameraPage> {
             revealed: canTakePicture,
             hiddenOffset: const Offset(0, 108),
             child: CameraButton(
-              onPressed: () {
-                takePicture();
-                onPictureCanceled();
-              },
+              onPressed: takePicture
             ),
           ),
           Revealer(
@@ -72,7 +69,7 @@ class _CameraPageState extends State<CameraPage> {
     );
   }
 
-  void takePicture() async {
+  Future<void> takePicture() async {
     if (!canTakePicture) return;
 
     final camera = Provider.of<CameraProvider>(context, listen: false);
@@ -96,6 +93,23 @@ class _CameraPageState extends State<CameraPage> {
     });
   }
 
+  Future<void> takePictureTest() async {
+    setState(() {
+      displayAIEffect = true;
+      displayChoiceButtons = false;
+    });
+
+    await Future.delayed(const Duration(seconds: 5));
+
+    Purchase testPurchase = Purchase("Gleba", "15\$");
+
+    setState(() {
+      cheapestProduct = testPurchase.item;
+      historyProvider.addToHistory(testPurchase);
+      onPictureCanceled();
+    });
+  }
+
   void onPictureAccepted() async {
     if (imageBytes == null) return;
 
@@ -104,13 +118,7 @@ class _CameraPageState extends State<CameraPage> {
       displayChoiceButtons = false;
     });
 
-    String? response = await sendToChatGPT(context, imageBytes!);
-    if (response == null || response.toLowerCase().contains("no product")) {
-      setState(() {
-        cheapestProduct = "No Product Found";
-      });
-      return;
-    }
+    String response = await sendToChatGPT(context, imageBytes!) ?? "No Product Found";
 
     response = response.toLowerCase();
 
@@ -122,21 +130,18 @@ class _CameraPageState extends State<CameraPage> {
       String price = response.split("price:")[1];
       purchase = Purchase(productName.trim(), price.trim());
     } catch (e) {
-      //
+      setState(() {
+        cheapestProduct = "No Product Found";
+      });
+      return;
     }
 
     setState(() {
       displayAIEffect = false;
+      cheapestProduct = purchase!.item;
+      historyProvider.addToHistory(purchase);
+      onPictureCanceled();
     });
-
-    if (purchase == null) return;
-
-    setState(
-      () {
-        cheapestProduct = purchase!.item;
-        historyProvider.addToHistory(purchase);
-      },
-    );
   }
 }
 
