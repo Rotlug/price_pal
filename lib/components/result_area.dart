@@ -145,8 +145,9 @@ class HistoryList extends StatelessWidget {
     return Stack(
       children: [
         ListView.builder(
+          reverse: true,
           itemBuilder: (context, index) {
-            if (index == 0) {
+            if (index == history.length) {
               return Padding(
                 padding: const EdgeInsets.all(12),
                 child: Text(
@@ -155,7 +156,7 @@ class HistoryList extends StatelessWidget {
                 ),
               );
             }
-            return PurchaseTile(purchase: history[index - 1]);
+            return PurchaseTile(purchase: history[index]);
           },
           itemCount: history.length + 1,
         ),
@@ -193,27 +194,51 @@ class NoHistory extends StatelessWidget {
   }
 }
 
-class PurchaseTile extends StatelessWidget {
+class PurchaseTile extends StatefulWidget {
   final Purchase purchase;
 
   const PurchaseTile({super.key, required this.purchase});
 
   @override
+  State<PurchaseTile> createState() => _PurchaseTileState();
+}
+
+class _PurchaseTileState extends State<PurchaseTile> {
+  double opacity = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      () => setState(
+        () {
+          opacity = 1;
+        },
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8, left: 12, right: 12),
-      child: Row(
-        children: [
-          Text(
-            purchase.item,
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
-          const AsteriskSeparator(),
-          Text(
-            purchase.price,
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
-        ],
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 200),
+      opacity: opacity,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8, left: 12, right: 12),
+        child: Row(
+          children: [
+            Text(
+              widget.purchase.item,
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
+            const AsteriskSeparator(),
+            Text(
+              widget.purchase.price,
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
+          ],
+        ),
       ),
     );
   }
