@@ -8,11 +8,12 @@ class DecoratedButton extends StatelessWidget {
   final bool suggestedAction;
   final String text;
 
-  const DecoratedButton(
-      {super.key,
-      required this.text,
-      this.onPressed,
-      required this.suggestedAction});
+  const DecoratedButton({
+    super.key,
+    required this.text,
+    this.onPressed,
+    required this.suggestedAction,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,14 +69,16 @@ class ButtonInnerShadows extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
-                  BoxShadow( // Black BoxShadow
+                  BoxShadow(
+                    // Black BoxShadow
                     inset: true,
                     color: Colors.black.withOpacity(0.5),
                     blurRadius: 2,
                     spreadRadius: 0,
                     offset: const Offset(0, 2),
                   ),
-                  BoxShadow( // White BoxShadow
+                  BoxShadow(
+                    // White BoxShadow
                     inset: true,
                     color: Colors.white.withOpacity(0.15),
                     blurRadius: 5,

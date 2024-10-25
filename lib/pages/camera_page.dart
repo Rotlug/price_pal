@@ -35,7 +35,6 @@ class _CameraPageState extends State<CameraPage> {
     historyProvider = Provider.of<HistoryProvider>(context);
 
     return SplitPage(
-      // allowedOrientations: const [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
       child1: Stack(
         children: [
           (image == null) ? const CameraView() : ImagePreview(image: image!),

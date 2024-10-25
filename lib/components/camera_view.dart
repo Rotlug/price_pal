@@ -3,35 +3,27 @@ import 'package:camera/camera.dart';
 import 'package:price_pal/providers/camera_provider.dart';
 import 'package:provider/provider.dart';
 
-class CameraView extends StatefulWidget {
+class CameraView extends StatelessWidget {
   const CameraView({super.key});
-
-  // final CameraDescription camera;
-
-  // const CameraView({super.key, required this.camera});
-
-  @override
-  State<CameraView> createState() => _CameraViewState();
-}
-
-class _CameraViewState extends State<CameraView> {
-  late final Provider<CameraProvider> camera;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    final cameraProvider = Provider.of<CameraProvider>(context);
+    final CameraController? controller =
+        Provider.of<CameraProvider>(context).controller;
 
-    return cameraProvider.controller != null
+    return controller != null
         ? SizedBox(
             width: size.width,
             height: size.height,
             child: FittedBox(
               fit: BoxFit.cover,
-              child: SizedBox(
-                width: 100, // the actual width is not important here
-                child: CameraPreview(cameraProvider.controller!),
-              ),
+              child: OrientationBuilder(builder: (context, orientation) {
+                return SizedBox(
+                  width: orientation == Orientation.portrait ? 1 : null,
+                  height: orientation == Orientation.landscape ? 1 : null,
+                  child: CameraPreview(controller),);
+              }),
             ),
           )
         : const Center(

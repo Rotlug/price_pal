@@ -19,15 +19,15 @@ class _ScreenBaseState extends State<ScreenBase> {
     if (widget.allowedOrientations != null) {
       SystemChrome.setPreferredOrientations(widget.allowedOrientations!);
     } else {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown
-      ]);
+      SystemChrome.setPreferredOrientations([]);
     }
   }
 
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([]);
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
