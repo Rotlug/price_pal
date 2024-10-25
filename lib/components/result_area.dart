@@ -45,11 +45,20 @@ class ResultArea extends StatelessWidget {
                 textAlign: TextAlign.left,
                 style: Theme.of(context).textTheme.displaySmall!,
               ),
-              analysing
-                  ? const ProcessingText()
-                  : Text(productName,
-                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          color: const Color.fromRGBO(255, 255, 255, 0.7)))
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                child: analysing
+                    ? const ProcessingText()
+                    : Text(
+                        productName,
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayLarge!
+                            .copyWith(
+                              color: const Color.fromRGBO(255, 255, 255, 0.7),
+                            ),
+                      ),
+              )
             ],
           ),
           const SizedBox(height: 10),
@@ -221,18 +230,20 @@ class AsteriskSeparator extends StatelessWidget {
           builder: (context, constraints) {
             // Get available width
             double totalWidth = constraints.maxWidth;
-      
+
             // Calculate how many asterisks will fit
             double asteriskWidth = _getTextWidth('*', context);
             int numAsterisks = (totalWidth / asteriskWidth).floor();
-      
+
             // Create a string of asterisks
             String asterisks = '*' * numAsterisks;
-      
+
             // Return the calculated asterisks as a Text widget
             return Text(
               asterisks,
-              style: Theme.of(context).textTheme.displayMedium!.copyWith(color: const Color.fromRGBO(255, 255, 255, 0.05)), // Apply the same style
+              style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                  color: const Color.fromRGBO(
+                      255, 255, 255, 0.05)), // Apply the same style
             );
           },
         ),
@@ -243,7 +254,8 @@ class AsteriskSeparator extends StatelessWidget {
   // Calculate width of text
   double _getTextWidth(String text, BuildContext context) {
     TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: Theme.of(context).textTheme.displayMedium),
+      text: TextSpan(
+          text: text, style: Theme.of(context).textTheme.displayMedium),
       // maxLines: 1,
       textDirection: TextDirection.ltr,
     )..layout(minWidth: 0, maxWidth: double.infinity);
