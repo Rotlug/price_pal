@@ -103,8 +103,9 @@ class ProcessingText extends StatelessWidget {
           onPlay: (controller) => controller.loop(),
         )
         .shimmer(
-            duration: const Duration(seconds: 2),
-            color: Colors.white.withOpacity(0.2));
+          duration: const Duration(seconds: 2),
+          color: Colors.white.withOpacity(0.2),
+        );
   }
 }
 

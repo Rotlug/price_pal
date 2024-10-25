@@ -1,5 +1,6 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:native_camera_sound/native_camera_sound.dart';
+import 'package:flutter/services.dart';
 
 class CameraButton extends StatefulWidget {
   final VoidCallback? onPressed;
@@ -13,6 +14,19 @@ class CameraButton extends StatefulWidget {
 
 class _CameraButtonState extends State<CameraButton> {
   double scale = 1;
+  late final AudioPlayer player;
+
+  @override
+  void initState() {
+    super.initState();
+    player = AudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +58,7 @@ class _CameraButtonState extends State<CameraButton> {
 
   void takePicture() {
     if (widget.onPressed != null) widget.onPressed!();
-
-    NativeCameraSound.playShutter();
+    player.play(AssetSource("sounds/camera.mp3"), volume: 1);
 
     // Scale down
     setState(() {
