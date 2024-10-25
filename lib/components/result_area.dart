@@ -46,7 +46,9 @@ class ResultArea extends StatelessWidget {
                 style: Theme.of(context).textTheme.displaySmall!,
               ),
               AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
+                duration: const Duration(milliseconds: 700),
+                switchInCurve: Curves.easeIn,
+                switchOutCurve: Curves.easeIn,
                 child: analysing
                     ? const ProcessingText()
                     : Text(
@@ -166,6 +168,7 @@ class HistoryList extends StatelessWidget {
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
               Theme.of(context).colorScheme.secondaryContainer.withOpacity(0),
+              Theme.of(context).colorScheme.secondaryContainer.withOpacity(0),
               Theme.of(context).colorScheme.secondaryContainer
             ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
           ),
@@ -258,7 +261,6 @@ class AsteriskSeparator extends StatelessWidget {
     TextPainter textPainter = TextPainter(
       text: TextSpan(
           text: text, style: Theme.of(context).textTheme.displayMedium),
-      // maxLines: 1,
       textDirection: TextDirection.ltr,
     )..layout(minWidth: 0, maxWidth: double.infinity);
     return textPainter.size.width;

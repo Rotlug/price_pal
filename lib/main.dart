@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:price_pal/pages/camera_page.dart';
 import 'package:price_pal/pages/landing_page.dart';
+import 'package:price_pal/pages/splash_page.dart';
 import 'package:price_pal/providers/camera_provider.dart';
 import 'package:price_pal/providers/history_provider.dart';
 import 'package:price_pal/providers/storage_provider.dart';
@@ -31,8 +32,6 @@ const TextTheme textTheme = TextTheme(
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-
   var mySystemTheme = SystemUiOverlayStyle.light.copyWith(
       systemNavigationBarColor: backgroundColor,
       statusBarColor: Colors.transparent);
@@ -64,7 +63,7 @@ class MainApp extends StatelessWidget {
           .read(key: "apiKey")
           .then(
         (value) {
-          return value == null ? const LandingPage() : const CameraPage();
+          return SplashPage(destination: value == null ? const LandingPage() : const CameraPage(),);
         },
       ),
       initialData: Container(),

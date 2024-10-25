@@ -44,6 +44,7 @@ dependencies:
   image: ^4.3.0
   shared_preferences: ^2.3.2
   audioplayers: ^6.1.0
+  video_player: ^2.9.2
 
 dev_dependencies:
   flutter_test:
@@ -90,3 +91,4 @@ flutter:
     - "assets/images/nohistory.png"
     - "assets/images/test.png"
     - "assets/sounds/camera.mp3"
+    - "assets/videos/loading.mp4"

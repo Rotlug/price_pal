@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class CameraButton extends StatefulWidget {
   final VoidCallback? onPressed;
@@ -45,6 +44,7 @@ class _CameraButtonState extends State<CameraButton> {
               shape: BoxShape.circle,
             ),
             child: FloatingActionButton(
+              heroTag: "cameraBtn",
               onPressed: takePicture,
               backgroundColor: Colors.white,
               elevation: 0,

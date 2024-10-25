@@ -99,9 +99,9 @@ class _CameraPageState extends State<CameraPage> {
       displayChoiceButtons = false;
     });
 
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 1));
 
-    Purchase testPurchase = Purchase("Gleba", "15\$");
+    Purchase testPurchase = Purchase("Splog", "\$15");
 
     setState(() {
       cheapestProduct = testPurchase.item;
@@ -224,6 +224,7 @@ class ChoiceButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FloatingActionButton(
+            heroTag: "deleteBtn",
             onPressed: onCancel,
             backgroundColor: const Color(0xffFF4747),
             shape: const CircleBorder(),
@@ -233,6 +234,7 @@ class ChoiceButtons extends StatelessWidget {
             width: 100,
           ),
           FloatingActionButton(
+            heroTag: "acceptBtn",
             onPressed: onAccept,
             shape: const CircleBorder(),
             child: const Icon(Icons.check),
