@@ -27,8 +27,17 @@ class _CameraPageState extends State<CameraPage> {
   bool displayChoiceButtons = false;
   bool displayAIEffect = false;
   String cheapestProduct = "************";
-
+  
   late HistoryProvider historyProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    Future.delayed(const Duration(seconds: 1), () {
+      SystemChrome.setPreferredOrientations([]);
+    },);
+  }
 
   @override
   Widget build(BuildContext context) {
