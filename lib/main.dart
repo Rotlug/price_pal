@@ -63,10 +63,13 @@ class MainApp extends StatelessWidget {
           .read(key: "apiKey")
           .then(
         (value) {
-          return SplashPage(destination: value == null ? const LandingPage() : const CameraPage(),);
+          return SplashPage(
+            destination:
+                value == null ? const LandingPage() : const CameraPage(),
+          );
         },
       ),
-      initialData: Container(),
+      initialData: const SizedBox(),
       builder: (context, snapshot) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -27,16 +27,19 @@ class _CameraPageState extends State<CameraPage> {
   bool displayChoiceButtons = false;
   bool displayAIEffect = false;
   String cheapestProduct = "************";
-  
+
   late HistoryProvider historyProvider;
 
   @override
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    Future.delayed(const Duration(seconds: 1), () {
-      SystemChrome.setPreferredOrientations([]);
-    },);
+    Future.delayed(
+      const Duration(seconds: 1),
+      () {
+        SystemChrome.setPreferredOrientations([]);
+      },
+    );
   }
 
   @override
@@ -44,15 +47,15 @@ class _CameraPageState extends State<CameraPage> {
     historyProvider = Provider.of<HistoryProvider>(context);
 
     return SplitPage(
+      minHeight: 230,
+      maxHeight: 330,
       child1: Stack(
         children: [
           (image == null) ? const CameraView() : ImagePreview(image: image!),
           Revealer(
             revealed: canTakePicture,
             hiddenOffset: const Offset(0, 108),
-            child: CameraButton(
-              onPressed: takePicture
-            ),
+            child: CameraButton(onPressed: takePicture),
           ),
           Revealer(
             revealed: displayChoiceButtons,
@@ -84,12 +87,14 @@ class _CameraPageState extends State<CameraPage> {
     Uint8List? pic = await camera.takePicture();
     if (pic == null) return;
 
-    setState(() {
-      canTakePicture = false;
-      image = Image.memory(pic);
-      imageBytes = pic;
-      displayChoiceButtons = true;
-    });
+    setState(
+      () {
+        canTakePicture = false;
+        image = Image.memory(pic);
+        imageBytes = pic;
+        displayChoiceButtons = true;
+      },
+    );
   }
 
   void onPictureCanceled() {
@@ -109,7 +114,7 @@ class _CameraPageState extends State<CameraPage> {
 
     await Future.delayed(const Duration(seconds: 1));
 
-    Purchase testPurchase = Purchase("Splog", "\$15");
+    Purchase testPurchase = Purchase("Robot :D", "\$15");
 
     setState(() {
       cheapestProduct = testPurchase.item;
@@ -126,7 +131,8 @@ class _CameraPageState extends State<CameraPage> {
       displayChoiceButtons = false;
     });
 
-    String response = await sendToChatGPT(context, imageBytes!) ?? "No Product Found";
+    String response =
+        await sendToChatGPT(context, imageBytes!) ?? "No Product Found";
 
     response = response.toLowerCase();
 

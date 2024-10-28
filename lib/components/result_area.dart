@@ -209,9 +209,12 @@ class PurchaseTile extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8, left: 12, right: 12),
       child: Row(
         children: [
-          Text(
-            purchase.item,
-            style: Theme.of(context).textTheme.displayMedium,
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 150),
+            child: Text(
+              overflow(purchase.item, 10),
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
           ),
           const AsteriskSeparator(),
           Text(
@@ -265,4 +268,9 @@ class AsteriskSeparator extends StatelessWidget {
     )..layout(minWidth: 0, maxWidth: double.infinity);
     return textPainter.size.width;
   }
+}
+
+String overflow(String text, int maxChars) {
+  if (text.length < maxChars) return text;
+  return "${text.substring(0, maxChars)}...";
 }
