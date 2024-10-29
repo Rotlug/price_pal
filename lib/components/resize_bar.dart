@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ResizeBar extends StatelessWidget {
-  final Function resizeFunc;
+  final Function(double) resizeFunc;
   final bool vertical;
 
   /// Displays a bar that detects resizing gestures from the user and
