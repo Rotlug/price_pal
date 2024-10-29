@@ -8,6 +8,7 @@ class DecoratedButton extends StatelessWidget {
   final bool suggestedAction;
   final String text;
 
+  /// `DecoratedButton` is a custom button that follows the Price.Pal style.
   const DecoratedButton({
     super.key,
     required this.text,

@@ -5,6 +5,9 @@ class DecoratedContainer extends StatefulWidget {
   final Widget? child;
   final double radius;
 
+  /// `DecoratedContainer` is a custom container that follows the Price.Pal style.
+  /// It also uses `ClipRRect` to clip its children so they dont render outside of the
+  /// border-radius.
   const DecoratedContainer({super.key, this.child, this.radius = 16});
 
   @override

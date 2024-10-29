@@ -6,9 +6,12 @@ import 'package:flutter/widgets.dart';
 import 'package:image/image.dart' as img;
 
 class CameraProvider extends ChangeNotifier {
-  CameraController? _controller;
+  CameraController? controller;
   List<CameraDescription>? _cameras;
 
+  /// `CameraProvider` provides the CameraController object. It also provides
+  /// a `takePicture` method that automaticaly rotates the image as needed, and returns it
+  /// as a Uint8List byte-array.
   CameraProvider() {
     initializeCameras();
   }
@@ -16,23 +19,22 @@ class CameraProvider extends ChangeNotifier {
   Future<void> initializeCameras() async {
     _cameras = await availableCameras();
     if (_cameras!.isNotEmpty) {
-      _controller = CameraController(
+      controller = CameraController(
         _cameras!.first,
         ResolutionPreset.high,
         enableAudio: false,
       );
-      await _controller!.initialize();
+      await controller!.initialize();
       notifyListeners();
     }
   }
 
-  CameraController? get controller => _controller;
-
   Future<Uint8List?> takePicture() async {
-    if (_controller != null && _controller!.value.isInitialized) {
+    if (controller != null && controller!.value.isInitialized) {
       try {
-        final XFile picture = await _controller!.takePicture();
-        final DeviceOrientation orientation = _controller!.value.deviceOrientation;
+        final XFile picture = await controller!.takePicture();
+        final DeviceOrientation orientation =
+            controller!.value.deviceOrientation;
 
         // Load image into memory
         final File imageFile = File(picture.path);
@@ -57,7 +59,6 @@ class CameraProvider extends ChangeNotifier {
             fixedImage = image; // No rotation if unknown orientation
         }
 
-
         return img.encodePng(fixedImage);
       } catch (e) {
         //
@@ -68,7 +69,7 @@ class CameraProvider extends ChangeNotifier {
 
   @override
   void dispose() {
-    _controller?.dispose();
+    controller?.dispose();
     super.dispose();
   }
 }

@@ -5,6 +5,9 @@ class CameraButton extends StatefulWidget {
   final VoidCallback? onPressed;
   static const int animationDuration = 250;
 
+  /// `CameraButton` is a styled `FloatingActionButton` that acts as a CameraButton,
+  /// aligning itself to the bottom of the available space.
+  /// Pressing the button also plays a custom shutter sound.
   const CameraButton({super.key, this.onPressed});
 
   @override
@@ -33,14 +36,15 @@ class _CameraButtonState extends State<CameraButton> {
       scale: scale,
       curve: Curves.easeIn,
       duration:
-      const Duration(milliseconds: CameraButton.animationDuration ~/ 2),
+          const Duration(milliseconds: CameraButton.animationDuration ~/ 2),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.white.withOpacity(0.5), width: 5),
+              border:
+                  Border.all(color: Colors.white.withOpacity(0.5), width: 5),
               shape: BoxShape.circle,
             ),
             child: FloatingActionButton(
@@ -68,8 +72,8 @@ class _CameraButtonState extends State<CameraButton> {
     // Scale Back up
     Future.delayed(
       const Duration(milliseconds: CameraButton.animationDuration ~/ 2),
-          () => setState(
-            () {
+      () => setState(
+        () {
           scale = 1;
         },
       ),

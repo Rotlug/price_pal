@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 class ResizeBar extends StatelessWidget {
   final Function resizeFunc;
   final bool vertical;
-  const ResizeBar(
-      {super.key, required this.resizeFunc, required this.vertical});
+
+  /// Displays a bar that detects resizing gestures from the user and
+  /// triggers a given function with a parameter (`double`) that represents the distance scrolled.
+  const ResizeBar({
+    super.key,
+    required this.resizeFunc,
+    required this.vertical,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +30,14 @@ class ResizeBar extends StatelessWidget {
         ),
       ),
       onVerticalDragUpdate: (details) {
-        if (vertical) {resizeFunc(details.delta.dy);}
+        if (vertical) {
+          resizeFunc(details.delta.dy);
+        }
       },
       onHorizontalDragUpdate: (details) {
-        if (!vertical) {resizeFunc(details.delta.dx);}
+        if (!vertical) {
+          resizeFunc(details.delta.dx);
+        }
       },
     );
   }

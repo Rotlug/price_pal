@@ -12,6 +12,8 @@ class SplitPage extends StatefulWidget {
   final int minHeight;
   final int maxHeight;
 
+  /// A Page with two containers, `child1` and `child2`, and a `ResizeBar`
+  /// to change the size of `child2`.
   const SplitPage({
     super.key,
     this.child1,

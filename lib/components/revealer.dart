@@ -6,6 +6,8 @@ class Revealer extends StatelessWidget {
   final Widget? child;
   final int duration;
 
+  /// Transitions a widget in and out of view with a smooth animation, using the
+  /// `revealed` state.
   const Revealer(
       {super.key,
       required this.revealed,

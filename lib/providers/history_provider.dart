@@ -4,14 +4,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HistoryProvider extends ChangeNotifier {
   late List<Purchase> history = [];
-  final SharedPreferencesAsync sp = SharedPreferencesAsync();
+  final SharedPreferencesAsync _sp = SharedPreferencesAsync();
 
+  /// The `HistoryProvider` class is used to access and add `Purchase`s
+  /// to the shopping history of the user.
   HistoryProvider() {
     getHistory().then((value) => history = value);
   }
 
   Future<List<Purchase>> getHistory() async {
-    String? historyJson = await sp.getString("history");
+    String? historyJson = await _sp.getString("history");
     if (historyJson == null) return [];
 
     List<dynamic> list = jsonDecode(historyJson);
@@ -26,7 +28,7 @@ class HistoryProvider extends ChangeNotifier {
   Future<void> addToHistory(Purchase purchase) async {
     history.add(purchase);
     notifyListeners();
-    await sp.setString("history", jsonEncode(history));
+    await _sp.setString("history", jsonEncode(history));
   }
 }
 

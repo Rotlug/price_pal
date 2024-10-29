@@ -4,6 +4,10 @@ import 'package:price_pal/providers/camera_provider.dart';
 import 'package:provider/provider.dart';
 
 class CameraView extends StatelessWidget {
+  /// `CameraView` displays a preview of the camera from the `CameraProvider`s controller.
+  /// If the controller is not initialized, it displays a small loading icon instead.
+  /// `CameraView` makes sure that the preview is scaled to fit the available space
+  /// without stretching the preview.
   const CameraView({super.key});
 
   @override
@@ -22,7 +26,8 @@ class CameraView extends StatelessWidget {
                 return SizedBox(
                   width: orientation == Orientation.portrait ? 1 : null,
                   height: orientation == Orientation.landscape ? 1 : null,
-                  child: CameraPreview(controller),);
+                  child: CameraPreview(controller),
+                );
               }),
             ),
           )
