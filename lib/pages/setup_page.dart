@@ -21,10 +21,11 @@ class _SetupPageState extends State<SetupPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isReady = inputString.toLowerCase().startsWith("sk-") && inputString.length > 30;
+    bool isReady =
+        inputString.toLowerCase().startsWith("sk-") && inputString.length > 30;
 
     return SplitPage(
-      minHeight: 250,
+      minSize: 250,
       child1: ImageFiltered(
         imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: const CameraView(),
@@ -36,9 +37,15 @@ class _SetupPageState extends State<SetupPage> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 8, bottom: 24),
-              child: Text("Your OpenAI Api Key", style: Theme.of(context).textTheme.displayLarge,),
+              child: Text(
+                "Your OpenAI Api Key",
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
             ),
-            Text("Whats your open api key?", style: Theme.of(context).textTheme.displaySmall,),
+            Text(
+              "Whats your open api key?",
+              style: Theme.of(context).textTheme.displaySmall,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: InputTextField(
@@ -49,28 +56,37 @@ class _SetupPageState extends State<SetupPage> {
                 },
               ),
             ),
-            Text("Your API key is stored & encrypted on-device.", style: Theme.of(context).textTheme.titleSmall!.copyWith(color: const Color.fromRGBO(255, 255, 255, 0.2), fontSize: 14),),
+            Text(
+              "Your API key is stored & encrypted on-device.",
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  color: const Color.fromRGBO(255, 255, 255, 0.2),
+                  fontSize: 14),
+            ),
             const Spacer(),
             DecoratedButton(
-              text: isReady ? "Let's Start Saving Money!" : "Insert API Key to continue",
+              text: isReady
+                  ? "Let's Start Saving Money!"
+                  : "Insert API Key to continue",
               suggestedAction: isReady,
-              onPressed: !isReady ? null : () {
-                Provider.of<StorageProvider>(context, listen: false)
-                    .storage
-                    .write(key: "apiKey", value: inputString)
-                    .then(
-                  (value) {
-                    if (context.mounted) {
-                      Navigator.pushReplacement(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => const CameraPage(),
-                        ),
+              onPressed: !isReady
+                  ? null
+                  : () {
+                      Provider.of<StorageProvider>(context, listen: false)
+                          .storage
+                          .write(key: "apiKey", value: inputString)
+                          .then(
+                        (value) {
+                          if (context.mounted) {
+                            Navigator.pushReplacement(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => const CameraPage(),
+                              ),
+                            );
+                          }
+                        },
                       );
-                    }
-                  },
-                );
-              },
+                    },
             ),
           ],
         ),
@@ -92,12 +108,11 @@ class InputTextField extends StatelessWidget {
         children: [
           TextField(
             decoration: InputDecoration(
-              border: InputBorder.none,
-              filled: true,
-              fillColor: const Color(0xff272727),
-              hintText: "Insert your api key",
-              hintStyle: Theme.of(context).textTheme.displayMedium
-            ),
+                border: InputBorder.none,
+                filled: true,
+                fillColor: const Color(0xff272727),
+                hintText: "Insert your api key",
+                hintStyle: Theme.of(context).textTheme.displayMedium),
             onChanged: onChanged,
           ),
           const ButtonInnerShadows()

@@ -47,8 +47,8 @@ class _CameraPageState extends State<CameraPage> {
     historyProvider = Provider.of<HistoryProvider>(context);
 
     return SplitPage(
-      minHeight: 230,
-      maxHeight: 330,
+      minSize: 230,
+      maxSize: 330,
       child1: Stack(
         children: [
           (image == null) ? const CameraView() : ImagePreview(image: image!),

@@ -9,8 +9,8 @@ class SplitPage extends StatefulWidget {
   final Widget? child2;
   final List<DeviceOrientation>? allowedOrientations;
 
-  final int minHeight;
-  final int maxHeight;
+  final int minSize;
+  final int maxSize;
 
   /// A Page with two containers, `child1` and `child2`, and a `ResizeBar`
   /// to change the size of `child2`.
@@ -19,8 +19,8 @@ class SplitPage extends StatefulWidget {
     this.child1,
     this.child2,
     this.allowedOrientations,
-    this.minHeight = 200,
-    this.maxHeight = 300,
+    this.minSize = 200,
+    this.maxSize = 300,
   });
 
   @override
@@ -33,14 +33,14 @@ class _SplitPageState extends State<SplitPage> {
   @override
   void initState() {
     super.initState();
-    height = (widget.minHeight + widget.maxHeight) / 2; // Start in the middle
+    height = (widget.minSize + widget.maxSize) / 2; // Start in the middle
   }
 
   void setHeight(double delta) {
     setState(
       () {
         height -= delta;
-        if (height > widget.maxHeight || height < widget.minHeight) {
+        if (height > widget.maxSize || height < widget.minSize) {
           // Revert the change if height exceeds boundaries
           height += delta;
         }
